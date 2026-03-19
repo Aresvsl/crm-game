@@ -28,29 +28,37 @@ export default function LoginPage() {
     setError("");
 
     if (isDemoMode && email === "admin@gamabones.com") {
-      // Em modo demo, salvamos um flag no cookie para o middleware
       document.cookie = "demo-session=true; path=/";
       router.push("/");
       return;
     }
 
-    console.log("Supabase Call Initiated...");
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      // 10 second timeout to prevent infinite hang
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("Tempo esgotado. Verifique sua conexão e tente novamente.")), 10000)
+      );
 
-    if (signInError) {
-      setError(signInError.message);
-      setLoading(false);
-    } else {
-      if (rememberMe) {
-        localStorage.setItem("rememberedEmail", email);
+      const authPromise = supabase.auth.signInWithPassword({ email, password });
+
+      const { error: signInError } = await Promise.race([authPromise, timeoutPromise]) as Awaited<typeof authPromise>;
+
+      if (signInError) {
+        setError(signInError.message);
       } else {
-        localStorage.removeItem("rememberedEmail");
+        if (rememberMe) {
+          localStorage.setItem("rememberedEmail", email);
+        } else {
+          localStorage.removeItem("rememberedEmail");
+        }
+        router.push("/");
+        return; // don't setLoading(false) on success
       }
-      router.push("/");
+    } catch (err: any) {
+      setError(err.message || "Erro inesperado. Tente novamente.");
     }
+
+    setLoading(false);
   };
 
   return (
