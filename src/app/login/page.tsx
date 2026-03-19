@@ -7,15 +7,20 @@ import Image from "next/image";
 import { supabase, isDemoMode } from "@/lib/supabase";
 
 export default function LoginPage() {
-  React.useEffect(() => {
-    window.alert("💎 CRM GAMA: VERSÃO DIAMANTE ATIVADA! ✅");
-  }, []);
-
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  React.useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +44,11 @@ export default function LoginPage() {
       setError(signInError.message);
       setLoading(false);
     } else {
+      if (rememberMe) {
+        localStorage.setItem("rememberedEmail", email);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+      }
       router.push("/");
     }
   };
@@ -85,6 +95,34 @@ export default function LoginPage() {
               placeholder="••••••••"
               required
             />
+          </div>
+
+          <div className="flex items-center space-x-3 px-2">
+            <label className="flex items-center cursor-pointer group">
+              <div className="relative">
+                <input 
+                  type="checkbox" 
+                  className="sr-only" 
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
+                <div className={`
+                  w-5 h-5 rounded-md border-2 transition-all duration-300
+                  ${rememberMe 
+                    ? 'bg-[#ff6b35] border-[#ff6b35] shadow-lg shadow-orange-500/30' 
+                    : 'bg-white/50 border-gray-200'}
+                `}>
+                  {rememberMe && (
+                    <svg className="w-full h-full text-white p-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+              </div>
+              <span className="ml-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider group-hover:text-[#1a3a70] transition-colors">
+                Lembrar meu e-mail
+              </span>
+            </label>
           </div>
 
           {error && (
