@@ -7,6 +7,10 @@ import Image from "next/image";
 import { supabase, isDemoMode } from "@/lib/supabase";
 
 export default function LoginPage() {
+  React.useEffect(() => {
+    window.alert("💎 CRM GAMA: VERSÃO DIAMANTE ATIVADA! ✅");
+  }, []);
+
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
