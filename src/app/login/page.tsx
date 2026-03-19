@@ -25,6 +25,7 @@ export default function LoginPage() {
       return;
     }
 
+    console.log("Supabase Call Initiated...");
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
