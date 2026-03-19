@@ -10,8 +10,8 @@ export async function middleware(req: NextRequest) {
   });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder',
+    'https://krvdixadkiqawlwtdnjc.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtydmRpeGFka2lxYXdsd3RkbmpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4MDAxNjQsImV4cCI6MjA4NzM3NjE2NH0.t82PeJJellZf-LPrti8m8amkaefDq4tX9UXYGtrsris',
     {
       cookies: {
         get(name: string) {
