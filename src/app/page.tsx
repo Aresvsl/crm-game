@@ -24,11 +24,9 @@ import {
   Zap
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { isDemoMode, supabase } from "@/lib/supabase";
 
 export default function Dashboard() {
-  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState([
     { label: "Vendas do Mês", value: "R$ 0", trend: "+0%", icon: <DollarSign />, color: 'orange' as const },
@@ -38,19 +36,6 @@ export default function Dashboard() {
   ]);
 
   const [recentOrders, setRecentOrders] = useState<any[]>([]);
-
-  // Auth guard: redirect to login if no session
-  useEffect(() => {
-    const checkAuth = async () => {
-      const isDemoSession = typeof document !== 'undefined' && document.cookie.includes('demo-session=true');
-      if (isDemoMode || isDemoSession) return;
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        router.push('/login');
-      }
-    };
-    checkAuth();
-  }, [router]);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
