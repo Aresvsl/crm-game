@@ -68,7 +68,8 @@ export default function ClientesPage() {
       .select();
 
     if (error) {
-      showToast("Erro ao salvar cliente", "error");
+      showToast(`Erro no banco: ${error.message} (Code: ${error.code})`, "error");
+      console.error("SUPABASE ERROR:", error);
       return;
     }
 
@@ -96,7 +97,8 @@ export default function ClientesPage() {
       .eq('id', editingCliente.id);
 
     if (error) {
-      showToast("Erro ao atualizar cliente", "error");
+      showToast(`Erro ao atualizar: ${error.message}`, "error");
+      console.error("SUPABASE ERROR:", error);
     } else {
       setClientes(clientes.map(c => c.id === editingCliente.id ? editingCliente : c));
       showToast("Cliente atualizado com sucesso!");
@@ -115,7 +117,8 @@ export default function ClientesPage() {
 
     const { error } = await supabase.from('clientes').delete().eq('id', id);
     if (error) {
-      showToast("Erro ao excluir cliente", "error");
+      showToast(`Erro ao excluir: ${error.message}`, "error");
+      console.error("SUPABASE ERROR:", error);
     } else {
       setClientes(clientes.filter(c => c.id !== id));
       showToast("Cliente excluído com sucesso!");

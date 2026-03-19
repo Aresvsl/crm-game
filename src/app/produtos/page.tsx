@@ -109,7 +109,12 @@ export default function ProdutosPage() {
       return;
     }
     const { data, error } = await supabase.from('produtos').insert([newProduto]).select();
-    if (!error && data) {
+    if (error) {
+      showToast(`Erro no banco: ${error.message} (Code: ${error.code})`, "error");
+      console.error("SUPABASE ERROR:", error);
+      return;
+    }
+    if (data) {
       const updated = [...produtos, data[0]];
       setProdutos(updated); calculateMetrics(updated);
       showToast("Produto adicionado!"); setModalOpen(false);
@@ -124,7 +129,10 @@ export default function ProdutosPage() {
       return;
     }
     const { error } = await supabase.from('produtos').update(editingProduto).eq('id', editingProduto.id);
-    if (!error) {
+    if (error) {
+       showToast(`Erro ao atualizar: ${error.message}`, "error");
+       console.error("SUPABASE ERROR:", error);
+    } else {
       const updated = produtos.map(p => p.id === editingProduto.id ? editingProduto : p);
       setProdutos(updated); calculateMetrics(updated);
       setEditModalOpen(false); showToast("Produto atualizado!");
@@ -139,7 +147,10 @@ export default function ProdutosPage() {
       showToast("Produto removido!"); return;
     }
     const { error } = await supabase.from('produtos').delete().eq('id', id);
-    if (!error) {
+    if (error) {
+       showToast(`Erro ao remover: ${error.message}`, "error");
+       console.error("SUPABASE ERROR:", error);
+    } else {
       const updated = produtos.filter(p => p.id !== id);
       setProdutos(updated); calculateMetrics(updated);
       showToast("Produto removido!");

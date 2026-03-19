@@ -77,7 +77,8 @@ export default function PedidosPage() {
     }
     const { error } = await supabase.from('pedidos').update({ status: newStatus }).eq('id', id);
     if (error) {
-      showToast("Erro ao atualizar status", "error");
+      showToast(`Erro ao atualizar: ${error.message} (Code: ${error.code})`, "error");
+      console.error("SUPABASE ERROR:", error);
     } else {
       setPedidos(pedidos.map(p => p.id === id ? { ...p, status: newStatus } : p));
       showToast(`Pedido ${newStatus === 'Aberto' ? 'aprovado' : 'rejeitado'} com sucesso!`);
@@ -95,7 +96,8 @@ export default function PedidosPage() {
 
     const { error } = await supabase.from('pedidos').delete().eq('id', id);
     if (error) {
-      showToast("Erro ao excluir pedido", "error");
+      showToast(`Erro ao excluir: ${error.message}`, "error");
+      console.error("SUPABASE ERROR:", error);
     } else {
       setPedidos(pedidos.filter(p => p.id !== id));
       showToast("Pedido removido com sucesso!");
