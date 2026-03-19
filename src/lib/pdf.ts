@@ -54,19 +54,11 @@ export const generateReceiptPDF = (order: any) => {
   doc.setFont("helvetica", "italic");
   doc.text("Este documento não tem valor fiscal. Obrigado!", 105, yPos + 40, { align: 'center' });
   
-  const safeClientName = (order.cliente || "CLIENTE").replace(/[^a-z0-9]/gi, '_').toUpperCase();
-  const filename = `RECIBO_GAMA_${String(order.id).slice(0, 8)}_${safeClientName}.pdf`;
+  const safeClientName = String(order.cliente || "CLIENTE").replace(/[^a-z0-9]/gi, '_').toUpperCase();
+  const filename = `RECIBO_GAMA_${String(order.id).split('-')[0].toUpperCase()}_${safeClientName}.pdf`;
   
-  // Manual trigger for reliable filename
-  const pdfBlob = doc.output('blob');
-  const url = URL.createObjectURL(pdfBlob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  // Standard doc.save is often more reliable for filenames in modern Chrome
+  doc.save(filename);
 };
 
 export const generateCatalogPDF = (products: any[]) => {
@@ -110,13 +102,5 @@ export const generateCatalogPDF = (products: any[]) => {
   });
 
   const filename = "CATALOGO_GAMA_BONES_2026.pdf";
-  const pdfBlob = doc.output('blob');
-  const url = URL.createObjectURL(pdfBlob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  doc.save(filename);
 };

@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💎 GAMA CRM PRO - Inventory Elite Edition
 
-## Getting Started
+Bem-vindo à versão **Diamond** do ecossistema GAMA. Este é um CRM de alta performance desenvolvido para gestão de ativos, vendas e relacionamento com clientes com uma experiência de usuário imersiva e luxuosa.
 
-First, run the development server:
+## 🚀 Funcionalidades Elite
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Diamond UI/UX**: Interface com Glassmorphism, fundos ambientais dinâmicos e micro-animações suaves.
+- **Gestão de Ativos Inteligente**: Controle de estoque com indicadores de saúde (Crítico, Atenção, Saudável) e visualização de distribuição via SVG customizado.
+- **Fluxo de Pedidos Fluido**: Carrinho reativo com persistência local e checkout otimizado.
+- **Documentação Profissional**: Geração instantânea de **Recibos em PDF** e **Catálogos** com tratamento de dados e segurança de download.
+- **WhatsApp Ready**: Compartilhamento estratégico de links de catálogo para clientes via "Link Público".
+- **Arquivo Fiscal Central**: Prontuário organizado para Notas Fiscais e histórico de documentos.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Stack Tecnológica
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework**: Next.js 15 (Tailwind CSS 4 Ready)
+- **Icons**: Lucide React (Elite Set)
+- **Database/Auth**: Supabase (PostgreSQL)
+- **Documentos**: jsPDF (Custom Engine)
+- **Animações**: Tailwind Animate + Framer-like CSS Transitions
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📦 Como rodar o projeto
 
-## Learn More
+1. **Instale as dependências**:
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Configure o ambiente**:
+   Crie um arquivo `.env.local` com suas credenciais do Supabase:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=seu_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=sua_key
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Inicie o motor**:
+   ```bash
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*Desenvolvido com o rigor da engenharia Diamond para a GAMA BONÉS.*
