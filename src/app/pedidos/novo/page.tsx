@@ -90,39 +90,34 @@ export default function NovoPedidoPage() {
 
     const total = calculateTotal();
 
-    // 1. Create Pedido
+    const clienteObj = clientes.find(c => c.id === clienteId);
+
+    // 1. Create Pedido with JSON items
     const { data: pedido, error: pedidoError } = await supabase
       .from('pedidos')
       .insert([{
         cliente_id: clienteId,
+        cliente: clienteObj ? clienteObj.nome : 'Cliente Desconhecido',
         total_venda: total,
-        status: 'Aberto'
+        status: 'Aberto',
+        items: items.map(item => ({
+          produto: produtos.find(p => p.id === item.produto_id)?.nome || 'Desconhecido',
+          produto_id: item.produto_id,
+          qtd: item.quantidade,
+          preco: item.preco,
+          subtotal: item.quantidade * item.preco
+        })),
+        data: new Date().toISOString()
       }])
       .select();
 
     if (pedidoError || !pedido) {
-      showToast("Erro ao criar pedido", "error");
+      showToast(`Erro ao criar pedido: ${pedidoError?.message}`, "error");
+      console.error("SUPABASE ERROR:", pedidoError);
       return;
     }
 
-    // 2. Create Items
-    const orderItems = items.map(item => ({
-      pedido_id: pedido[0].id,
-      produto_id: item.produto_id,
-      quantidade: item.quantidade,
-      preco_unitario: item.preco
-    }));
-
-    const { error: itemsError } = await supabase
-      .from('itens_pedido')
-      .insert(orderItems);
-
-    if (itemsError) {
-      showToast("Erro ao salvar itens", "error");
-      return;
-    }
-
-    // 3. Update Stock
+    // 2. Update Stock
     for (const item of items) {
       const currentProduct = produtos.find(p => p.id === item.produto_id);
       if (currentProduct) {
