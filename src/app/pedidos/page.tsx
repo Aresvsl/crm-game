@@ -253,7 +253,10 @@ export default function PedidosPage() {
                 Fechar
               </button>
               <button 
-                onClick={() => generateReceiptPDF(selectedOrder)}
+                onClick={async () => {
+                  showToast("Gerando recibo PDF...", "info");
+                  await generateReceiptPDF(selectedOrder);
+                }}
                 className="flex-[3] py-4 bg-[#ff6b35] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-orange-500/20 flex items-center justify-center gap-2"
               >
                 <FileText size={16} />

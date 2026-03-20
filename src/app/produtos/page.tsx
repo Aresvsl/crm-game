@@ -202,8 +202,11 @@ export default function ProdutosPage() {
           </button>
           
           <div className="flex items-center gap-2 p-1.5 bg-white/50 backdrop-blur-md border border-white/60 rounded-[1.5rem] shadow-xl">
-             <button 
-              onClick={() => generateCatalogPDF(filteredProdutos)}
+            <button 
+              onClick={async () => {
+                showToast("Gerando Catálogo PDF...", "info");
+                await generateCatalogPDF(filteredProdutos);
+              }}
               className="p-4 bg-linear-to-r from-[#ff6b35] to-[#f97316] text-white rounded-xl transition-all shadow-lg shadow-orange-500/20 group animate-pulse-slow hover:animate-none hover:scale-105 active:scale-95"
               title="Gerar PDF do Catálogo"
             >
