@@ -166,9 +166,10 @@ export default function CatalogoPublicoPage() {
       showToast("Pedido solicitado com sucesso! Aguarde nosso contato.");
       clearCart();
       setCheckoutModalOpen(false);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      showToast("Erro ao processar pedido. Tente novamente.", "error");
+      const errorMessage = err?.message || err?.details || JSON.stringify(err);
+      showToast(`Falha no banco de dados: ${errorMessage}`, "error");
     } finally {
       setIsSubmitting(false);
     }
