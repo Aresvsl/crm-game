@@ -3,7 +3,7 @@
 import { MoreHorizontal, Search, SlidersHorizontal } from "lucide-react";
 
 export const Table = ({ columns, data, actions }: { 
-  columns: { key: string, label: string }[], 
+  columns: { key: string, label: string, format?: (value: any) => React.ReactNode }[], 
   data: any[],
   actions?: { label: string, onClick: (item: any) => void, variant?: 'danger' | 'default', show?: (item: any) => boolean }[]
 }) => (
@@ -41,7 +41,7 @@ export const Table = ({ columns, data, actions }: {
               {columns.map(col => (
                 <td key={col.key} className="px-4 lg:px-8 py-4 lg:py-6 whitespace-nowrap">
                   <span className="text-xs lg:text-sm font-semibold text-[#1a3a70]/70 group-hover:text-[#1a3a70] transition-colors tabular-nums">
-                    {row[col.key]}
+                    {col.format ? col.format(row[col.key]) : row[col.key]}
                   </span>
                 </td>
               ))}

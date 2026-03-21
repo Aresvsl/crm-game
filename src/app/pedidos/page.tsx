@@ -70,9 +70,17 @@ export default function PedidosPage() {
 
   
   const handleStatusUpdate = async (id: string, newStatus: string) => {
+    const messages: any = {
+      'Aberto': 'aprovado',
+      'Rejeitado': 'rejeitado',
+      'Em Produção': 'enviado para produção',
+      'Enviado': 'marcado como enviado',
+      'Concluído': 'concluído'
+    };
+    
     if (isDemoMode) {
       setPedidos(pedidos.map(p => p.id === id ? { ...p, status: newStatus } : p));
-      showToast(`Pedido ${newStatus === 'Aberto' ? 'aprovado' : 'rejeitado'}!`);
+      showToast(`Pedido ${messages[newStatus]}!`);
       return;
     }
     const { error } = await supabase.from('pedidos').update({ status: newStatus }).eq('id', id);
@@ -81,7 +89,7 @@ export default function PedidosPage() {
       console.error("SUPABASE ERROR:", error);
     } else {
       setPedidos(pedidos.map(p => p.id === id ? { ...p, status: newStatus } : p));
-      showToast(`Pedido ${newStatus === 'Aberto' ? 'aprovado' : 'rejeitado'} com sucesso!`);
+      showToast(`Pedido ${messages[newStatus]} com sucesso!`);
     }
   };
 
@@ -115,6 +123,7 @@ export default function PedidosPage() {
   const getStatusStyle = (status: string) => {
     switch (status) {
       case 'Concluído': return 'text-green-600 bg-green-50 px-2 py-1 rounded-full text-xs font-bold';
+      case 'Enviado': return 'text-teal-600 bg-teal-50 px-2 py-1 rounded-full text-xs font-bold';
       case 'Em Produção': return 'text-orange-600 bg-orange-50 px-2 py-1 rounded-full text-xs font-bold';
       case 'Aberto': return 'text-blue-600 bg-blue-50 px-2 py-1 rounded-full text-xs font-bold';
       case 'Aguardando Aprovação': return 'text-purple-600 bg-purple-50 px-2 py-1 rounded-full text-xs font-bold animate-pulse';
@@ -161,6 +170,21 @@ export default function PedidosPage() {
                 onClick: (p) => handleStatusUpdate(p.id, 'Rejeitado'),
                 variant: 'danger',
                 show: (p: any) => p.status === 'Aguardando Aprovação'
+              },
+              { 
+                label: "Produzir", 
+                onClick: (p) => handleStatusUpdate(p.id, 'Em Produção'),
+                show: (p: any) => p.status === 'Aberto'
+              },
+              { 
+                label: "Enviar", 
+                onClick: (p) => handleStatusUpdate(p.id, 'Enviado'),
+                show: (p: any) => p.status === 'Em Produção'
+              },
+              { 
+                label: "Concluir", 
+                onClick: (p) => handleStatusUpdate(p.id, 'Concluído'),
+                show: (p: any) => p.status === 'Enviado'
               },
               { label: "Excluir", onClick: (p) => handleDelete(p.id), variant: 'danger' }
             ]}

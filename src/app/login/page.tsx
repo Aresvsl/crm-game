@@ -13,6 +13,8 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [isResetting, setIsResetting] = useState(false);
 
   React.useEffect(() => {
     const savedEmail = localStorage.getItem("rememberedEmail");
@@ -61,6 +63,30 @@ export default function LoginPage() {
     setLoading(false);
   };
 
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    if (isDemoMode) {
+      setSuccess("Modo Demo: Instruções de recuperação enviadas ficticiamente.");
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/login?reset=true`,
+    });
+
+    if (error) {
+      setError(error.message);
+    } else {
+      setSuccess("Se o e-mail existir, você receberá um link para redefinir a senha.");
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-50">
       {/* Background Shapes */}
@@ -83,73 +109,105 @@ export default function LoginPage() {
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mt-2">Portal Administrativo</p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-6">
-          <div className="space-y-1">
-            <FormInput
-              label="E-mail Corporativo"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@gamabones.com"
-              required
-            />
-          </div>
-          <div className="space-y-1">
-            <FormInput
-              label="Senha de Acesso"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-            />
-          </div>
-
-          <div className="flex items-center space-x-3 px-2">
-            <label className="flex items-center cursor-pointer group">
-              <div className="relative">
-                <input 
-                  type="checkbox" 
-                  className="sr-only" 
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                />
-                <div className={`
-                  w-5 h-5 rounded-md border-2 transition-all duration-300
-                  ${rememberMe 
-                    ? 'bg-[#ff6b35] border-[#ff6b35] shadow-lg shadow-orange-500/30' 
-                    : 'bg-white/50 border-gray-200'}
-                `}>
-                  {rememberMe && (
-                    <svg className="w-full h-full text-white p-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </div>
-              </div>
-              <span className="ml-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider group-hover:text-[#1a3a70] transition-colors">
-                Lembrar meu e-mail
-              </span>
-            </label>
-          </div>
-
-          {error && (
-            <div className="bg-red-50 border border-red-100 text-red-500 text-[10px] font-bold uppercase tracking-wider p-4 rounded-xl text-center animate-in slide-in-from-top-2">
-              {error}
+        {isResetting ? (
+          <form onSubmit={handleResetPassword} className="space-y-6">
+            <div className="space-y-1">
+              <FormInput
+                label="E-mail Corporativo"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@gamabones.com"
+                required
+              />
+              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-2">Enviaremos um link de recuperação.</p>
             </div>
-          )}
 
-          <button 
-            disabled={loading}
-            className={`
-              w-full bg-[#1a3a70] text-white p-5 rounded-2xl font-black text-sm uppercase tracking-widest mt-4 
-              transition-all shadow-xl shadow-blue-900/20
-              ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.02] active:scale-[0.98]'}
-            `}
-          >
-            {loading ? 'Autenticando...' : 'Avançar para o Painel'}
-          </button>
-        </form>
+            {error && (
+              <div className="bg-red-50 text-red-500 text-[10px] font-bold uppercase tracking-wider p-4 rounded-xl text-center">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase tracking-wider p-4 rounded-xl text-center">
+                {success}
+              </div>
+            )}
+
+            <button 
+              disabled={loading}
+              className={`w-full bg-[#ff6b35] text-white p-5 rounded-2xl font-black text-sm uppercase tracking-widest mt-4 transition-all shadow-xl shadow-orange-500/20 ${loading ? 'opacity-50' : 'hover:scale-[1.02]'}`}
+            >
+              {loading ? 'Enviando...' : 'Recuperar Senha'}
+            </button>
+            <button 
+              type="button"
+              onClick={() => { setIsResetting(false); setError(""); setSuccess(""); }}
+              className="w-full text-[#1a3a70] text-[10px] font-black uppercase tracking-widest hover:text-[#ff6b35] transition-colors mt-4"
+            >
+              Voltar ao Login
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-1">
+              <FormInput
+                label="E-mail Corporativo"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@gamabones.com"
+                required
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between items-center mb-1">
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Senha de Acesso</label>
+                <button type="button" onClick={() => setIsResetting(true)} className="text-[10px] font-black uppercase tracking-widest text-[#ff6b35] hover:text-[#1a3a70] transition-colors">Esqueceu?</button>
+              </div>
+              <input
+                type="password"
+                className="w-full p-4 rounded-2xl bg-gray-50/50 border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] text-[#1a3a70] font-bold"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            <div className="flex items-center space-x-3 px-2">
+              <label className="flex items-center cursor-pointer group">
+                <div className="relative">
+                  <input 
+                    type="checkbox" 
+                    className="sr-only" 
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                  <div className={`w-5 h-5 rounded-md border-2 transition-all duration-300 ${rememberMe ? 'bg-[#ff6b35] border-[#ff6b35]' : 'bg-white/50 border-gray-200'}`}>
+                    {rememberMe && <svg className="w-full h-full text-white p-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" /></svg>}
+                  </div>
+                </div>
+                <span className="ml-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider group-hover:text-[#1a3a70] transition-colors">
+                  Lembrar meu e-mail
+                </span>
+              </label>
+            </div>
+
+            {error && (
+              <div className="bg-red-50 text-red-500 text-[10px] font-bold uppercase tracking-wider p-4 rounded-xl text-center">
+                {error}
+              </div>
+            )}
+
+            <button 
+              disabled={loading}
+              className={`w-full bg-[#1a3a70] text-white p-5 rounded-2xl font-black text-sm uppercase tracking-widest mt-4 transition-all shadow-xl shadow-blue-900/20 ${loading ? 'opacity-50' : 'hover:scale-[1.02]'}`}
+            >
+              {loading ? 'Autenticando...' : 'Avançar para o Painel'}
+            </button>
+          </form>
+        )}
 
         <p className="text-center mt-10 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
           Problemas de acesso? <a href="#" className="text-[#ff6b35]">Contate o suporte</a>

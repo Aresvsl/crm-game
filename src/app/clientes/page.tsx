@@ -28,18 +28,25 @@ export default function ClientesPage() {
     setLoading(true);
     if (isDemoMode) {
       setClientes([
-        { id: "1", nome: "João Exemplo (MOCK)", email: "joao@mock.com", telefone: "(11) 99999-9999", cidade: "São Paulo" },
-        { id: "2", nome: "Maria Demo (MOCK)", email: "maria@demo.com", telefone: "(21) 88888-8888", cidade: "Rio de Janeiro" },
+        { id: "1", nome: "João Exemplo (MOCK)", email: "joao@mock.com", telefone: "(11) 99999-9999", cidade: "São Paulo", qtd_pedidos: 2, total_gasto: 350.50 },
+        { id: "2", nome: "Maria Demo (MOCK)", email: "maria@demo.com", telefone: "(21) 88888-8888", cidade: "Rio de Janeiro", qtd_pedidos: 0, total_gasto: 0 },
       ]);
       setLoading(false);
       return;
     }
     const { data, error } = await supabase
       .from('clientes')
-      .select('*')
+      .select('*, pedidos(id, total_venda)')
       .order('created_at', { ascending: false });
     
-    if (data) setClientes(data);
+    if (data) {
+      const enriched = data.map((c: any) => ({
+        ...c,
+        qtd_pedidos: c.pedidos?.length || 0,
+        total_gasto: c.pedidos?.reduce((sum: number, p: any) => sum + (p.total_venda || 0), 0) || 0
+      }));
+      setClientes(enriched);
+    }
     setLoading(false);
   };
 
@@ -48,6 +55,8 @@ export default function ClientesPage() {
     { key: "email", label: "E-mail" },
     { key: "telefone", label: "Telefone" },
     { key: "cidade", label: "Cidade" },
+    { key: "qtd_pedidos", label: "Nº Pedidos" },
+    { key: "total_gasto", label: "Total Gasto", format: (v: any) => `R$ ${(v || 0).toFixed(2)}` },
   ];
 
   const handleAdd = async () => {

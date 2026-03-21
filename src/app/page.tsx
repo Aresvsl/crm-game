@@ -36,6 +36,8 @@ export default function Dashboard() {
   ]);
 
   const [recentOrders, setRecentOrders] = useState<any[]>([]);
+  const [salesData, setSalesData] = useState<any[]>([]);
+  const [productData, setProductData] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -56,37 +58,55 @@ export default function Dashboard() {
         return;
       }
       
-      const { data: orders } = await supabase.from('pedidos').select('total_venda, status');
-      if (orders) {
+      const { data: orders } = await supabase.from('pedidos').select('*, items, clientes(nome)').order('created_at', { ascending: false });
+      if (orders && orders.length > 0) {
         const totalVendas = orders.reduce((acc, o) => acc + o.total_venda, 0);
         const pending = orders.filter(o => o.status === 'Aguardando Aprovação').length;
         setStats([
-          { label: "Vendas do Mês", value: `R$ ${totalVendas.toLocaleString()}`, trend: "+0%", icon: <DollarSign />, color: 'orange' as const },
-          { label: "Novos Clientes", value: "24", trend: "+0%", icon: <Users />, color: 'blue' as const },
+          { label: "Vendas do Mês", value: `R$ ${totalVendas.toLocaleString()}`, trend: "Real time", icon: <DollarSign />, color: 'orange' as const },
+          { label: "Novos Clientes", value: "N/A", trend: "Real time", icon: <Users />, color: 'blue' as const },
           { label: "Pedidos Pendentes", value: pending.toString(), trend: "Aprovação", icon: <ShoppingBag />, color: 'purple' as const },
-          { label: "Stock Premium", value: "0", trend: "Estável", icon: <Package />, color: 'emerald' as const },
+          { label: "Stock Premium", value: "N/A", trend: "Estável", icon: <Package />, color: 'emerald' as const },
         ]);
+
+        const groupedSales: Record<string, number> = {};
+        orders.forEach(o => {
+           let dStr = "N/A";
+           if (o.created_at) {
+             const date = new Date(o.created_at);
+             dStr = `${date.getDate()}/${date.getMonth()+1}`;
+           }
+           groupedSales[dStr] = (groupedSales[dStr] || 0) + o.total_venda;
+        });
+        const chartData = Object.entries(groupedSales).map(([name, vendas]) => ({ name, vendas })).reverse().slice(0, 7);
+        setSalesData(chartData.length ? chartData : [{ name: "Hoje", vendas: 0 }]);
+
+        const prodCount: Record<string, number> = {};
+        orders.forEach(o => {
+           (o.items || []).forEach((item: any) => {
+              const name = item.produto || item.nome || "Outros";
+              prodCount[name] = (prodCount[name] || 0) + (item.qtd || item.quantidade || 1);
+           });
+        });
+        const topProds = Object.entries(prodCount)
+           .sort((a, b) => b[1] - a[1])
+           .slice(0, 5)
+           .map(([name, value]) => ({ name, value: Number(value) }));
+        setProductData(topProds.length ? topProds : [{ name: "Nenhum", value: 1 }]);
+
+        const recent = orders.slice(0, 5).map(o => ({
+           id: o.id.length > 8 ? `#${o.id.slice(0, 8)}` : `#${o.id}`,
+           cliente: o.clientes?.nome || 'Cliente',
+           valor: `R$ ${o.total_venda.toFixed(2)}`,
+           status: o.status
+        }));
+        setRecentOrders(recent);
       }
       setLoading(false);
     };
 
     fetchDashboardData();
   }, []);
-
-  const salesData = [
-    { name: "Seg", vendas: 4000 },
-    { name: "Ter", vendas: 3000 },
-    { name: "Qua", vendas: 2000 },
-    { name: "Qui", vendas: 2780 },
-    { name: "Sex", vendas: 1890 },
-    { name: "Sáb", vendas: 2390 },
-    { name: "Dom", vendas: 3490 },
-  ];
-
-  const productData = [
-    { name: "Snapback", value: 400 },
-    { name: "Trucker", value: 300 },
-  ];
   const COLORS = ['#1a3a70', '#ff6b35', '#2563eb', '#10b981'];
 
   const columns = [
@@ -156,26 +176,24 @@ export default function Dashboard() {
         </div>
 
         <div className="glass-card p-10 rounded-[2.5rem] shadow-2xl shadow-[#1a3a70]/5 flex flex-col">
-          <h2 className="text-xl font-black text-[#1a3a70] tracking-tighter mb-8">Atividade Recente</h2>
-          <div className="space-y-6 flex-1">
-            {[
-              { type: 'pedido', title: 'Novo Pedido #1004', time: '10 min atrás', color: 'orange' },
-              { type: 'estoque', title: 'Reposição Snapback', time: '2h atrás', color: 'emerald' },
-              { type: 'cliente', title: 'Novo Cliente: André Rossi', time: '5h atrás', color: 'blue' },
-              { type: 'venda', title: 'Meta Diária Atingida!', time: 'Ontem', color: 'navy' },
-            ].map((activity, i) => (
-              <div key={i} className="flex gap-4 items-start group cursor-default">
-                <div className={`mt-1 h-2 w-2 rounded-full bg-${activity.color}-500 group-hover:scale-125 transition-transform`} />
-                <div>
-                  <p className="text-sm font-bold text-[#1a3a70] mb-0.5">{activity.title}</p>
-                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{activity.time}</p>
-                </div>
-              </div>
-            ))}
+          <h2 className="text-xl font-black text-[#1a3a70] tracking-tighter mb-8">Top Produtos</h2>
+          <div className="flex-1 w-full relative z-10 min-h-[250px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={productData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#1a3a70">
+                  {productData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  contentStyle={{ borderRadius: '15px', border: 'none', boxShadow: '0 10px 25px -5px rgb(0 0 0 / 0.1)', fontWeight: 'bold' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
-          <button className="mt-8 text-[10px] font-black uppercase tracking-widest text-[#1a3a70] hover:text-[#ff6b35] transition-colors text-left">
-            Ver Log Completo →
-          </button>
+          <div className="mt-4 text-center">
+             <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Baseado em volume de itens vendidos</p>
+          </div>
         </div>
       </div>
 
