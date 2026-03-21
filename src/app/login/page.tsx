@@ -5,6 +5,7 @@ import { FormInput } from "@/components/Forms";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { supabase, isDemoMode } from "@/lib/supabase";
+import { Sparkles, ShoppingBag, MessageCircle, ShieldCheck, Palette } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -214,57 +215,81 @@ export default function LoginPage() {
         </p>
       </div>
 
-      {/* Release Notes / Changelog Panel */}
-      <div className="glass-card w-full max-w-md lg:max-w-xl p-10 rounded-[2.5rem] relative z-10 animate-in fade-in slide-in-from-right-12 duration-1000 delay-300">
-        <div className="flex items-center gap-5 mb-10">
-          <div className="h-14 w-14 bg-white rounded-2xl flex items-center justify-center shadow-2xl shadow-gray-200/50 border border-gray-100">
-            <span className="text-3xl">✨</span>
-          </div>
-          <div>
-            <h2 className="text-xl md:text-2xl font-black text-[#1a3a70] tracking-tighter uppercase">Release Notes</h2>
-            <p className="text-[10px] font-black text-[#ff6b35] uppercase tracking-[0.2em] bg-orange-50/80 border border-orange-100 inline-block px-3 py-1 rounded-lg mt-1">v2.1.0 • E-commerce Elite</p>
-          </div>
-        </div>
-
-        <div className="space-y-8">
-          <div className="space-y-2 group">
-            <h3 className="text-xs font-black text-[#1a3a70] uppercase tracking-widest flex items-center gap-3">
-              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">➕</span> 
-              Catálogo Inteligente
-            </h3>
-            <p className="text-sm text-gray-500 leading-relaxed pl-9 group-hover:text-gray-700 transition-colors">
-              O catálogo público foi completamente reformulado. Agora possui um carrinho de compras integrado, <strong>bloqueio dinâmico de compras sem estoque</strong> e formatação visual imersiva.
-            </p>
+      {/* Release Notes / Changelog Panel - Premium Vercel/Linear Style */}
+      <div className="w-full max-w-md lg:max-w-xl p-1 relative z-10 animate-in fade-in slide-in-from-right-12 duration-1000 delay-300 rounded-[3rem] bg-gradient-to-br from-white/80 to-white/30 backdrop-blur-2xl border border-white/60 shadow-[0_20px_60px_-15px_rgba(26,58,112,0.1)]">
+        <div className="p-8 md:p-10">
+          <div className="flex items-center gap-5 mb-10">
+            <div className="h-16 w-16 bg-gradient-to-br from-[#1a3a70] to-blue-900 rounded-[1.5rem] flex items-center justify-center shadow-xl shadow-blue-900/30 border border-white/20">
+              <Sparkles className="text-white" size={28} />
+            </div>
+            <div>
+              <h2 className="text-2xl md:text-3xl font-black text-[#1a3a70] tracking-tighter uppercase drop-shadow-sm">Release Notes</h2>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff6b35] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-[#ff6b35]"></span>
+                </span>
+                <span className="text-[10px] font-black text-[#ff6b35] uppercase tracking-[0.2em] bg-orange-50 border border-orange-100/50 px-3 py-1 rounded-full shadow-sm">v2.1.0 Elite Update</span>
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-2 group">
-            <h3 className="text-xs font-black text-[#1a3a70] uppercase tracking-widest flex items-center gap-3">
-              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-green-100 text-[#25D366]">💬</span> 
-              Expresso WhatsApp
-            </h3>
-            <p className="text-sm text-gray-500 leading-relaxed pl-9 group-hover:text-gray-700 transition-colors">
-              Pedidos validados via catálogo são interceptados, formatados com todos os dados do cliente (Nome, Cidade, Endereço e Meio de Pagamento) e disparados prontos para o WhatsApp oficial da loja.
-            </p>
-          </div>
+          <div className="space-y-4">
+            {/* Item 1 */}
+            <div className="p-6 rounded-[2rem] bg-white/40 border border-white/60 hover:bg-white hover:border-emerald-100 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 group relative overflow-hidden cursor-default">
+              <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="flex gap-5">
+                <div className="h-12 w-12 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 shadow-inner">
+                  <ShoppingBag size={22} strokeWidth={2.5} />
+                </div>
+                <div>
+                  <h3 className="text-xs font-black text-[#1a3a70] uppercase tracking-widest mb-1.5 group-hover:text-emerald-600 transition-colors">Catálogo PRO</h3>
+                  <p className="text-xs text-gray-500 font-medium leading-relaxed">Novo carrinho flutuante responsivo com sistema dinâmico de <strong>bloqueio de compras sem estoque real</strong>.</p>
+                </div>
+              </div>
+            </div>
 
-          <div className="space-y-2 group">
-            <h3 className="text-xs font-black text-[#1a3a70] uppercase tracking-widest flex items-center gap-3">
-              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-600">🛡️</span> 
-              Estabilidade CRM
-            </h3>
-            <p className="text-sm text-gray-500 leading-relaxed pl-9 group-hover:text-gray-700 transition-colors">
-              Implementação de travas de segurança na criação manual de pedidos no painel interno, <strong>impedindo que operadores selecionem produtos esgotados</strong>. Vacina contra corrupção de cache habilitada.
-            </p>
-          </div>
+            {/* Item 2 */}
+            <div className="p-6 rounded-[2rem] bg-white/40 border border-white/60 hover:bg-white hover:border-[#25D366]/30 hover:shadow-2xl hover:shadow-[#25D366]/10 transition-all duration-500 group relative overflow-hidden cursor-default">
+              <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#25D366] opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="flex gap-5">
+                <div className="h-12 w-12 rounded-2xl bg-[#25D366]/10 text-[#25D366] flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500 shadow-inner">
+                  <MessageCircle size={22} strokeWidth={2.5} />
+                </div>
+                <div>
+                  <h3 className="text-xs font-black text-[#1a3a70] uppercase tracking-widest mb-1.5 group-hover:text-[#25D366] transition-colors">Expresso WhatsApp</h3>
+                  <p className="text-xs text-gray-500 font-medium leading-relaxed">Pedidos do catálogo interceptados e formatados (Nome, Endereço, Pix) direto para o número oficial da loja.</p>
+                </div>
+              </div>
+            </div>
 
-          <div className="space-y-2 group">
-            <h3 className="text-xs font-black text-[#1a3a70] uppercase tracking-widest flex items-center gap-3">
-              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-purple-100 text-purple-600">🎨</span> 
-              Design System & UX
-            </h3>
-            <p className="text-sm text-gray-500 leading-relaxed pl-9 group-hover:text-gray-700 transition-colors">
-              Substituição de emojis por ícones vetorizados de alta resolução (PIX, Cartões, IG) e injeção de <i>Políticas de Troca e FAQ</i> em modais flutuantes no rodapé da loja.
-            </p>
+            {/* Item 3 */}
+            <div className="p-6 rounded-[2rem] bg-white/40 border border-white/60 hover:bg-white hover:border-blue-100 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 group relative overflow-hidden cursor-default">
+              <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="flex gap-5">
+                <div className="h-12 w-12 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 shadow-inner">
+                  <ShieldCheck size={22} strokeWidth={2.5} />
+                </div>
+                <div>
+                  <h3 className="text-xs font-black text-[#1a3a70] uppercase tracking-widest mb-1.5 group-hover:text-blue-600 transition-colors">Blindagem CRM</h3>
+                  <p className="text-xs text-gray-500 font-medium leading-relaxed">Travas de segurança no PDV interno para <strong>impedir venda de produtos esgotados pela equipe</strong> e vacina de cache de navegador.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Item 4 */}
+            <div className="p-6 rounded-[2rem] bg-white/40 border border-white/60 hover:bg-white hover:border-purple-100 hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-500 group relative overflow-hidden cursor-default">
+              <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="flex gap-5">
+                <div className="h-12 w-12 rounded-2xl bg-purple-50 text-purple-500 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500 shadow-inner">
+                  <Palette size={22} strokeWidth={2.5} />
+                </div>
+                <div>
+                  <h3 className="text-xs font-black text-[#1a3a70] uppercase tracking-widest mb-1.5 group-hover:text-purple-600 transition-colors">Design System & UX</h3>
+                  <p className="text-xs text-gray-500 font-medium leading-relaxed">Ícones vetorizados premium (PIX, Cartões, IG) e modais flutuantes sofisticados para Políticas de Troca e FAQ Público.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
