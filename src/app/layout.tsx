@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GAMA BONÉS | CRM PRO",
-  description: "Sistema de Alta Performance para Gestão de Vendas - GAMA Bonés",
+  title: "GAMA VARIEDADES | CRM PRO",
+  description: "Sistema de Alta Performance para Gestão de Vendas - GAMA Variedades",
   icons: {
     icon: "/favicon.ico",
   }

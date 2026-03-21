@@ -105,7 +105,7 @@ export default function LoginPage() {
             />
           </div>
           <h1 className="text-3xl font-black text-[#1a3a70] tracking-tighter text-center uppercase">
-            GAMA <span className="text-[#ff6b35]">Bonés</span>
+            GAMA <span className="text-[#ff6b35]">Variedades</span>
           </h1>
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mt-2">Portal Administrativo</p>
         </div>
@@ -118,7 +118,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@gamabones.com"
+                placeholder="admin@gamavariedades.com"
                 required
               />
               <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-2">Enviaremos um link de recuperação.</p>
@@ -157,7 +157,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@gamabones.com"
+                placeholder="admin@gamavariedades.com"
                 required
               />
             </div>

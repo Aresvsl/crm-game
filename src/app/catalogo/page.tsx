@@ -173,7 +173,7 @@ export default function CatalogoPublicoPage() {
 
       // Build WhatsApp message
       const storePhone = "5588997285655"; // Número oficial da loja
-      let msg = `*NOVO PEDIDO GAMA BONÉS* 🧢\n\n`;
+      let msg = `*NOVO PEDIDO GAMA VARIEDADES* 🛍️\n\n`;
       msg += `*Cliente:* ${customerInfo.nome}\n`;
       msg += `*Telefone:* ${customerInfo.whatsapp}\n`;
       msg += `*Cidade:* ${customerInfo.cidade}\n\n`;
@@ -308,7 +308,7 @@ export default function CatalogoPublicoPage() {
                 Vista o <span className="text-[#ff6b35]">Autêntico</span> <br className="hidden md:block"/>Estilo Urbano.
               </h2>
               <p className="text-blue-100 text-sm md:text-base max-w-md font-medium">
-                Descubra a nova coleção de bonés Gama 2026. Design exclusivo, qualidade premium e aquele caimento perfeito para o seu dia a dia.
+                Descubra a nova coleção exclusiva da Gama Variedades. Design único, qualidade premium e aquele estilo incrível para o seu dia a dia.
               </p>
               <button 
                 onClick={() => {
@@ -465,7 +465,7 @@ export default function CatalogoPublicoPage() {
                 <img src="/logo.png" alt="Gama Bones Logo" className="h-full object-contain" />
               </div>
               <p className="text-sm text-gray-500 font-medium max-w-sm mb-6">
-                A Gama Bonés traz o melhor do design urbano diretamente para sua cabeça. Qualidade garantida e estilo inconfundível.
+                A Gama Variedades traz o melhor do cenário urbano e utilitário diretamente para você. Qualidade garantida e excelência.
               </p>
               <div className="flex gap-4">
                 <a href="https://www.instagram.com/gama_variedades1/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-[#1a3a70] hover:bg-[#1a3a70] hover:text-white cursor-pointer transition-colors">
@@ -483,8 +483,8 @@ export default function CatalogoPublicoPage() {
                 <li 
                   onClick={() => openInfoModal("Sobre a Marca", (
                     <div className="space-y-4 text-sm text-gray-600 leading-relaxed text-justify">
-                      <p>A <strong>Gama Bonés</strong> nasceu da paixão pelo autêntico estilo urbano. Produzimos acessórios com o mais alto padrão de qualidade do mercado, focando sempre no caimento perfeito, resistência e conforto.</p>
-                      <p>Nosso objetivo não é apenas vender bonés, mas sim entregar identidade, atitude e autoestima para quem veste a nossa marca. Mais do que um acessório exclusivo, uma verdadeira afirmação de estilo no seu dia a dia.</p>
+                      <p>A <strong>Gama Variedades</strong> nasceu da paixão pelo autêntico estilo urbano. Trabalhamos com um acervo diversificado e o mais alto padrão de qualidade do mercado, focando sempre na resistência e no conforto dos nossos produtos.</p>
+                      <p>Nosso objetivo não é apenas vender itens, mas sim entregar solução, identidade e autoestima para quem confia em nossa marca. Mais do que produtos, uma afirmação de estilo e praticidade no seu dia a dia.</p>
                     </div>
                   ))} 
                   className="hover:text-[#ff6b35] cursor-pointer transition-colors"
@@ -494,7 +494,7 @@ export default function CatalogoPublicoPage() {
                 <li 
                   onClick={() => openInfoModal("Políticas de Troca", (
                     <div className="space-y-4 text-sm text-gray-600 leading-relaxed text-justify">
-                      <p>O nosso compromisso inegociável é com a sua total satisfação. Se precisar trocar ou devolver seu boné, as regras são simples e transparentes:</p>
+                      <p>O nosso compromisso inegociável é com a sua total satisfação. Se precisar trocar ou devolver seu produto, as regras são simples e transparentes:</p>
                       <ul className="list-disc pl-5 space-y-2">
                         <li>Você tem até <strong>7 dias corridos</strong> após o recebimento para solicitar a troca ou devolução.</li>
                         <li>O produto não pode ter marcas de uso, odores ou manchas de qualquer natureza.</li>
@@ -547,7 +547,7 @@ export default function CatalogoPublicoPage() {
           </div>
           <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-xs text-gray-400 font-medium mb-4 pb-12 md:pb-0 text-center md:text-left">
-              &copy; 2026 Gama Bonés. Todos os direitos reservados.
+              &copy; 2026 Gama Variedades. Todos os direitos reservados.
             </p>
           </div>
         </div>
