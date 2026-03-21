@@ -21,6 +21,11 @@ export default function CatalogoPublicoPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [productQuantities, setProductQuantities] = useState<Record<string, number>>({});
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [infoModal, setInfoModal] = useState<{ isOpen: boolean, title: string, content: React.ReactNode }>({ isOpen: false, title: "", content: null });
+
+  const openInfoModal = (title: string, content: React.ReactNode) => {
+    setInfoModal({ isOpen: true, title, content });
+  };
 
   useEffect(() => {
     fetchProdutos();
@@ -478,10 +483,56 @@ export default function CatalogoPublicoPage() {
             <div>
               <h4 className="font-black text-[#1a3a70] mb-4 uppercase text-xs tracking-wider">Links Úteis</h4>
               <ul className="space-y-3 text-sm text-gray-500 font-medium">
-                <li className="hover:text-[#ff6b35] cursor-pointer transition-colors">Sobre a Marca</li>
-                <li className="hover:text-[#ff6b35] cursor-pointer transition-colors">Políticas de Troca</li>
-                <li className="hover:text-[#ff6b35] cursor-pointer transition-colors">Perguntas Frequentes</li>
-                <li className="hover:text-[#ff6b35] cursor-pointer transition-colors">Contato</li>
+                <li 
+                  onClick={() => openInfoModal("Sobre a Marca", (
+                    <div className="space-y-4 text-sm text-gray-600 leading-relaxed text-justify">
+                      <p>A <strong>Gama Bonés</strong> nasceu da paixão pelo autêntico estilo urbano. Produzimos acessórios com o mais alto padrão de qualidade do mercado, focando sempre no caimento perfeito, resistência e conforto.</p>
+                      <p>Nosso objetivo não é apenas vender bonés, mas sim entregar identidade, atitude e autoestima para quem veste a nossa marca. Mais do que um acessório exclusivo, uma verdadeira afirmação de estilo no seu dia a dia.</p>
+                    </div>
+                  ))} 
+                  className="hover:text-[#ff6b35] cursor-pointer transition-colors"
+                >
+                  Sobre a Marca
+                </li>
+                <li 
+                  onClick={() => openInfoModal("Políticas de Troca", (
+                    <div className="space-y-4 text-sm text-gray-600 leading-relaxed text-justify">
+                      <p>O nosso compromisso inegociável é com a sua total satisfação. Se precisar trocar ou devolver seu boné, as regras são simples e transparentes:</p>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li>Você tem até <strong>7 dias corridos</strong> após o recebimento para solicitar a troca ou devolução.</li>
+                        <li>O produto não pode ter marcas de uso, odores ou manchas de qualquer natureza.</li>
+                        <li>A etiqueta original e o lacre precisam estar perfeitos e anexados à peça.</li>
+                        <li>Em caso de defeito de fabricação comprovado, o frete reverso é 100% por nossa conta.</li>
+                      </ul>
+                      <p>Basta nos chamar no WhatsApp oficial do atendimento que resolvemos tudo de forma ágil para você!</p>
+                    </div>
+                  ))} 
+                  className="hover:text-[#ff6b35] cursor-pointer transition-colors"
+                >
+                  Políticas de Troca
+                </li>
+                <li 
+                  onClick={() => openInfoModal("Perguntas Frequentes", (
+                    <div className="space-y-5 text-sm text-gray-600 leading-relaxed text-justify">
+                      <div>
+                        <h4 className="font-bold text-[#1a3a70] text-base">Como funciona o frete e o envio?</h4>
+                        <p className="mt-1">O valor calculado do frete e o prazo de entrega variam de acordo com o CEP da sua cidade. Quando você finaliza o pedido pelo nosso catálogo, a equipe levanta as melhores opções de envio para você escolher diretamente pelo WhatsApp!</p>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-[#1a3a70] text-base">Posso retirar pessoalmente com vocês?</h4>
+                        <p className="mt-1">Com certeza absoluta! Basta selecionar a opção <strong>"Retirar no Local"</strong> na hora do checkout. O endereço de retirada e o horário de funcionamento serão combinados pelo nosso atendimento logo após a confirmação do fechamento.</p>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-[#1a3a70] text-base">Quais são as formas de pagamento oficiais?</h4>
+                        <p className="mt-1">Aceitamos pagamentos via <strong>PIX</strong> (com aprovação imediata), <strong>Cartão de Crédito/Débito</strong> através de links totalmente seguros e também <strong>Dinheiro em Espécie</strong> exclusivo para os casos de retirada em mãos ou entregas locais via motoboy.</p>
+                      </div>
+                    </div>
+                  ))} 
+                  className="hover:text-[#ff6b35] cursor-pointer transition-colors"
+                >
+                  Perguntas Frequentes
+                </li>
+                <li onClick={() => window.open(`https://api.whatsapp.com/send/?phone=5588997285655&text=Olá! Preciso tirar uma dúvida específica sobre a loja.`, '_blank')} className="hover:text-[#ff6b35] cursor-pointer transition-colors">Contato</li>
               </ul>
             </div>
             
@@ -746,6 +797,23 @@ export default function CatalogoPublicoPage() {
           <p className="text-[9px] md:text-[10px] text-center text-gray-400 font-bold uppercase tracking-widest leading-relaxed">
             Ao enviar, nossa equipe entrará em contato para confirmar opções de frete e envio.
           </p>
+        </div>
+      </Modal>
+
+      {/* FOOTER INFO MODAL */}
+      <Modal 
+        isOpen={infoModal.isOpen} 
+        onClose={() => setInfoModal({ ...infoModal, isOpen: false })} 
+        title={infoModal.title}
+      >
+        <div className="p-2 md:p-6 pb-2">
+          {infoModal.content}
+          <button 
+            onClick={() => setInfoModal({ ...infoModal, isOpen: false })}
+            className="w-full mt-10 py-3.5 bg-gray-100 text-[#1a3a70] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors"
+          >
+            Entendi
+          </button>
         </div>
       </Modal>
     </div>
