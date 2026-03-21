@@ -672,9 +672,18 @@ export default function CatalogoPublicoPage() {
             <p className="text-[10px] md:text-xs font-black text-gray-400 uppercase tracking-widest pl-1">Forma de Pagamento</p>
             <div className="grid grid-cols-3 gap-2 md:gap-3">
               {[
-                { id: 'pix', label: 'PIX', icon: '💎' },
-                { id: 'cartao', label: 'Cartão', icon: '💳' },
-                { id: 'dinheiro', label: 'Dinheiro', icon: '💵' }
+                { 
+                  id: 'pix', 
+                  label: 'PIX', 
+                  icon: (
+                    <svg viewBox="0 0 512 512" className="h-6 w-6 md:h-7 md:w-7 mx-auto mb-1 text-[#32bcad]">
+                      <path fill="currentColor" d="M126.9 176l93.2-93.2c16.9-16.9 44.4-16.9 61.3 0l93.2 93.2c16.9 16.9 16.9 44.4 0 61.3L281.4 330.5c-16.9 16.9-44.4 16.9-61.3 0L126.9 237.3c-16.9-16.9-16.9-44.4 0-61.3zm247.3 178.5l-93.2 93.2c-16.9 16.9-44.4 16.9-61.3 0L126.5 354.5c-16.9-16.9-16.9-44.4 0-61.3l93.2-93.2c16.9-16.9 44.4-16.9 61.3 0l93.2 93.2c16.9 16.9 16.9 44.4 0 61.3z" opacity="0.6"/>
+                      <path fill="currentColor" d="M339.7 265L433 171.8c16.9-16.9 44.4-16.9 61.3 0 16.9 16.9 16.9 44.4 0 61.3L401 326.3c-16.9 16.9-44.4 16.9-61.3 0-16.9-16.9-16.9-44.4 0-61.3zM161.8 265L68.6 171.8c-16.9-16.9-16.9-44.4 0-61.3 16.9-16.9 44.4-16.9 61.3 0l93.3 93.2c16.9 16.9 16.9 44.4 0 61.3L129.9 358.2c-16.9 16.9-44.4 16.9-61.3 0-16.9-16.9-16.9-44.4 0-61.3L161.8 265z"/>
+                    </svg>
+                  )
+                },
+                { id: 'cartao', label: 'Cartão', icon: <span className="text-xl md:text-2xl mt-1 mb-2 block">💳</span> },
+                { id: 'dinheiro', label: 'Dinheiro', icon: <span className="text-xl md:text-2xl mt-1 mb-2 block">💵</span> }
               ].map(method => (
                 <button 
                   key={method.id}
