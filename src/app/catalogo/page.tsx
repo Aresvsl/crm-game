@@ -104,11 +104,11 @@ export default function CatalogoPublicoPage() {
     try {
       // 1. Find or create client
       let cliente_id;
-      const { data: existingClient } = await supabase
+      const { data: existingClient, error: checkError } = await supabase
         .from('clientes')
         .select('id')
         .eq('telefone', customerInfo.whatsapp)
-        .single();
+        .maybeSingle();
 
       if (existingClient) {
         cliente_id = existingClient.id;
