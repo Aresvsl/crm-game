@@ -468,12 +468,9 @@ export default function CatalogoPublicoPage() {
                 A Gama Bonés traz o melhor do design urbano diretamente para sua cabeça. Qualidade garantida e estilo inconfundível.
               </p>
               <div className="flex gap-4">
-                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-[#1a3a70] hover:bg-[#1a3a70] hover:text-white cursor-pointer transition-colors">
+                <a href="https://www.instagram.com/gama_variedades1/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-[#1a3a70] hover:bg-[#1a3a70] hover:text-white cursor-pointer transition-colors">
                   <span className="font-bold">IG</span>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-[#1a3a70] hover:bg-[#1a3a70] hover:text-white cursor-pointer transition-colors">
-                  <span className="font-bold">FB</span>
-                </div>
+                </a>
                 <a href="https://api.whatsapp.com/send/?phone=5588997285655&text=Opa!+Vi+as+variedades+da+loja+no+Instagram+e+decidi+chamar.+Quero+saber+mais+sobre+os+produtos+e+como+faço+para+garantir+os+meus!&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center text-white cursor-pointer transition-opacity hover:opacity-90">
                   <span className="font-bold px-[1px]">WA</span>
                 </a>
