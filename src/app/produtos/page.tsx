@@ -31,12 +31,20 @@ export default function ProdutosPage() {
 
   useEffect(() => {
     const savedCart = localStorage.getItem('gama-cart');
-    if (savedCart) setCart(JSON.parse(savedCart));
+    if (savedCart) {
+      try { setCart(JSON.parse(savedCart)); } catch { localStorage.removeItem('gama-cart'); }
+    }
     fetchProdutos();
   }, []);
 
   const addToCart = (product: any) => {
     const existing = cart.find(item => item.id === product.id);
+    
+    if ((existing?.quantidade || 0) + 1 > product.estoque) {
+      showToast(`Temos apenas ${product.estoque} unidades disponíveis!`, "error");
+      return;
+    }
+
     let newCart;
     if (existing) {
       newCart = cart.map(item => item.id === product.id ? { ...item, quantidade: item.quantidade + 1 } : item);

@@ -211,37 +211,15 @@ export default function PedidosPage() {
               </div>
             </div>
 
-            {selectedOrder.metadata && (
-              <div className="p-6 rounded-2xl bg-blue-50/50 border border-blue-100 flex items-center gap-6">
-                <div className="text-3xl">
-                  {selectedOrder.metadata.entrega === 'entrega' ? '🚚' : '🏠'}
-                </div>
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-blue-900/40 mb-1">
-                    {selectedOrder.metadata.entrega === 'entrega' ? 'Endereço de Entrega' : 'Forma de Recebimento'}
-                  </p>
-                  <p className="font-bold text-[#1a3a70]">
-                    {selectedOrder.metadata.entrega === 'entrega' 
-                      ? selectedOrder.metadata.endereco 
-                      : 'Retirada no Local'}
-                  </p>
-                </div>
+            <div className="p-6 rounded-2xl bg-indigo-50/50 border border-indigo-100 flex items-center gap-6">
+              <div className="text-3xl">📱</div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-[#1a3a70]/40 mb-1">Pagamento e Entrega</p>
+                <p className="font-bold text-[#1a3a70] text-sm">
+                  Os detalhes de endereço e forma de pagamento foram combinados diretamente via WhatsApp com o cliente.
+                </p>
               </div>
-            )}
-
-            {selectedOrder.metadata?.pagamento && (
-              <div className="p-6 rounded-2xl bg-emerald-50/50 border border-emerald-100 flex items-center gap-6">
-                <div className="text-3xl">
-                  {selectedOrder.metadata.pagamento === 'pix' ? '💎' : selectedOrder.metadata.pagamento === 'cartao' ? '💳' : '💵'}
-                </div>
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-emerald-900/40 mb-1">Forma de Pagamento</p>
-                  <p className="font-bold text-[#1a3a70] uppercase">
-                    {selectedOrder.metadata.pagamento}
-                  </p>
-                </div>
-              </div>
-            )}
+            </div>
 
             <div>
               <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Itens do Pedido</p>

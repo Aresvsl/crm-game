@@ -20,12 +20,16 @@ export default function NovoPedidoPage() {
   useEffect(() => {
     const savedCart = localStorage.getItem('gama-cart');
     if (savedCart) {
-      const parsed = JSON.parse(savedCart);
-      setItems(parsed.map((item: any) => ({
-        produto_id: item.id,
-        quantidade: item.quantidade,
-        preco: item.preco
-      })));
+      try {
+        const parsed = JSON.parse(savedCart);
+        setItems(parsed.map((item: any) => ({
+          produto_id: item.id,
+          quantidade: item.quantidade,
+          preco: item.preco
+        })));
+      } catch {
+        localStorage.removeItem('gama-cart');
+      }
     }
     fetchData();
   }, []);
@@ -86,6 +90,19 @@ export default function NovoPedidoPage() {
       showToast("Modo Demonstração: Pedido finalizado localmente!");
       router.push("/pedidos");
       return;
+    }
+
+    // Validate Stock BEFORE inserting order
+    for (const item of items) {
+      const product = produtos.find(p => p.id === item.produto_id);
+      if (!product) {
+        showToast("Produto inválido", "error");
+        return;
+      }
+      if (item.quantidade > product.estoque) {
+        showToast(`Sem estoque! O produto ${product.nome} só tem ${product.estoque} unidades.`, "error");
+        return;
+      }
     }
 
     const total = calculateTotal();
