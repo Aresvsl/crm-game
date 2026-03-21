@@ -146,6 +146,23 @@ export default function CatalogoPublicoPage() {
 
       if (orderErr) throw orderErr;
 
+      // Build WhatsApp message
+      const storePhone = "5511988887777"; // Número fictício da loja
+      let msg = `*NOVO PEDIDO GAMA BONÉS* 🧢\n\n`;
+      msg += `*Cliente:* ${customerInfo.nome}\n`;
+      msg += `*Telefone:* ${customerInfo.whatsapp}\n\n`;
+      msg += `*ITENS:*\n`;
+      cart.forEach(item => {
+        msg += `- ${item.quantidade}x ${item.nome} (R$ ${item.preco.toFixed(2)})\n`;
+      });
+      msg += `\n*TOTAL:* R$ ${total.toFixed(2)}\n`;
+      msg += `*Forma de Recebimento:* ${customerInfo.deliveryMethod === 'entrega' ? `Entrega em: ${customerInfo.endereco}` : 'Retirar no Local'}\n`;
+      msg += `*Pagamento:* ${customerInfo.paymentMethod.toUpperCase()}\n\n`;
+      msg += `ID do Pedido: #${order.id.split('-')[0]}\n`;
+      
+      const waUrl = `https://wa.me/${storePhone}?text=${encodeURIComponent(msg)}`;
+      window.open(waUrl, '_blank');
+
       showToast("Pedido solicitado com sucesso! Aguarde nosso contato.");
       clearCart();
       setCheckoutModalOpen(false);
