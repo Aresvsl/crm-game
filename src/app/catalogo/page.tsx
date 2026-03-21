@@ -167,7 +167,7 @@ export default function CatalogoPublicoPage() {
       }
 
       // Build WhatsApp message
-      const storePhone = "5511988887777"; // Número fictício da loja
+      const storePhone = "5588997285655"; // Número oficial da loja
       let msg = `*NOVO PEDIDO GAMA BONÉS* 🧢\n\n`;
       msg += `*Cliente:* ${customerInfo.nome}\n`;
       msg += `*Telefone:* ${customerInfo.whatsapp}\n\n`;
@@ -468,9 +468,9 @@ export default function CatalogoPublicoPage() {
                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-[#1a3a70] hover:bg-[#1a3a70] hover:text-white cursor-pointer transition-colors">
                   <span className="font-bold">FB</span>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center text-white cursor-pointer transition-opacity hover:opacity-90">
-                  <span className="font-bold">WA</span>
-                </div>
+                <a href="https://api.whatsapp.com/send/?phone=5588997285655&text=Opa!+Vi+as+variedades+da+loja+no+Instagram+e+decidi+chamar.+Quero+saber+mais+sobre+os+produtos+e+como+faço+para+garantir+os+meus!&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center text-white cursor-pointer transition-opacity hover:opacity-90">
+                  <span className="font-bold px-[1px]">WA</span>
+                </a>
               </div>
             </div>
             
@@ -682,8 +682,30 @@ export default function CatalogoPublicoPage() {
                     </svg>
                   )
                 },
-                { id: 'cartao', label: 'Cartão', icon: <span className="text-xl md:text-2xl mt-1 mb-2 block">💳</span> },
-                { id: 'dinheiro', label: 'Dinheiro', icon: <span className="text-xl md:text-2xl mt-1 mb-2 block">💵</span> }
+                { 
+                  id: 'cartao', 
+                  label: 'Cartão', 
+                  icon: (
+                    <svg viewBox="0 0 24 24" className="h-6 w-6 md:h-7 md:w-7 mx-auto mb-1 text-gray-800">
+                      <path fill="currentColor" d="M4 2h16c1.1 0 2 .9 2 2v16c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2z"/>
+                      <path fill="white" d="M5 8h4c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1H5c-.55 0-1-.45-1-1V9c0-.55.45-1 1-1zm1 1v1h2V9H6zm0 2v1h2v-1H6z"/>
+                      <rect fill="white" x="5" y="16" width="2" height="2"/>
+                      <rect fill="white" x="8" y="16" width="2" height="2"/>
+                      <rect fill="white" x="11" y="16" width="2" height="2"/>
+                      <rect fill="white" x="14" y="16" width="2" height="2"/>
+                      <rect fill="white" x="17" y="16" width="2" height="2"/>
+                    </svg>
+                  ) 
+                },
+                { 
+                  id: 'dinheiro', 
+                  label: 'Dinheiro', 
+                  icon: (
+                    <svg viewBox="0 0 24 24" className="h-6 w-6 md:h-7 md:w-7 mx-auto mb-1 text-green-600">
+                      <path fill="currentColor" d="M4 5h16c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2zm0 2v10h16V7H4zm8 8c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm0-2c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1z"/>
+                    </svg>
+                  ) 
+                }
               ].map(method => (
                 <button 
                   key={method.id}
