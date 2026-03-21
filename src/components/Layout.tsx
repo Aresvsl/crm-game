@@ -12,7 +12,9 @@ import {
   ChevronRight,
   LogOut,
   Bell,
-  ExternalLink
+  ExternalLink,
+  Menu as MenuIcon,
+  X 
 } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -69,6 +71,14 @@ export const Layout = ({ children, user }: { children: React.ReactNode, user: { 
           className="absolute -right-3 top-10 bg-[#ff6b35] text-white p-1 rounded-full border-2 border-[#f8fafc] shadow-lg hover:scale-110 transition-transform hidden lg:block"
         >
           {isSidebarOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+        </button>
+
+        {/* Mobile Close Button */}
+        <button 
+          onClick={() => setMobileMenuOpen(false)}
+          className="absolute right-4 top-4 p-2 text-white/50 hover:text-white lg:hidden"
+        >
+          <X size={24} />
         </button>
 
         <div className="p-8 flex items-center justify-center border-b border-white/5 h-44">
@@ -160,7 +170,7 @@ export const Layout = ({ children, user }: { children: React.ReactNode, user: { 
                onClick={() => setMobileMenuOpen(true)}
                className="lg:hidden p-2 text-[#1a3a70] hover:bg-white/50 rounded-lg transition-colors"
              >
-               <LayoutDashboard size={24} />
+               <MenuIcon size={24} />
              </button>
              <h2 className="text-lg lg:text-xl font-black tracking-tight text-[#1a3a70] truncate max-w-[200px] lg:max-w-none">
                Bem-vindo de volta, <span className="text-[#ff6b35]">{user.name.split(' ')[0]}</span>!

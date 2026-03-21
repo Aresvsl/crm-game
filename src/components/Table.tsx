@@ -47,7 +47,7 @@ export const Table = ({ columns, data, actions }: {
               ))}
               {actions && (
                 <td className="px-4 lg:px-8 py-4 lg:py-6 text-right">
-                  <div className="flex justify-end gap-2 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex justify-end gap-2 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {actions.filter(act => !act.show || act.show(row)).map((act, j) => (
                       <button 
                         key={act.label} 

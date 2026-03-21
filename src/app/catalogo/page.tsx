@@ -8,6 +8,7 @@ import { supabase, isDemoMode } from "@/lib/supabase";
 import { useToast } from "@/contexts/ToastContext";
 import { TableSkeleton } from "@/components/Skeleton";
 import { Search, ShoppingCart, Send, X, Menu, ChevronRight, ShoppingBag, CreditCard, Heart } from "lucide-react";
+import Image from "next/image";
 
 export default function CatalogoPublicoPage() {
   const { showToast } = useToast();
@@ -218,8 +219,14 @@ export default function CatalogoPublicoPage() {
           <div className="flex justify-between items-center h-20">
             {/* Logo area */}
             <div className="flex items-center gap-3 cursor-pointer">
-              <div className="h-12 w-auto">
-                <img src="/logo.png" alt="Gama Variedades Logo" className="w-full h-full object-contain drop-shadow-sm" />
+              <div className="relative h-12 w-12">
+                <Image 
+                  src="/logo.png" 
+                  alt="Gama Variedades Logo" 
+                  fill
+                  className="object-contain drop-shadow-sm" 
+                  priority
+                />
               </div>
               <div className="hidden sm:block">
                 <h1 className="text-xl font-black text-[#1a3a70] tracking-tight leading-none mb-0.5">GAMA</h1>
@@ -323,7 +330,15 @@ export default function CatalogoPublicoPage() {
               {/* Product hero placeholder */}
               <div className="relative w-72 h-72 md:w-96 md:h-96">
                 <div className="absolute inset-0 bg-white/5 rounded-full border border-white/10 animate-[spin_20s_linear_infinite]"></div>
-                <img src="/logo.png" alt="Hero Product" className="w-full h-full object-contain filter drop-shadow-2xl z-10 relative scale-110" />
+                <div className="relative w-full h-full scale-110 z-10 transition-transform duration-700 hover:rotate-3">
+                  <Image 
+                    src="/logo.png" 
+                    alt="Hero Product" 
+                    fill
+                    className="object-contain filter drop-shadow-2xl" 
+                    priority
+                  />
+                </div>
                 
                 {/* Floating tags */}
                 <div className="absolute top-10 right-0 bg-white text-[#1a3a70] py-2 px-4 rounded-xl shadow-xl font-black text-sm rotate-6 z-20">
@@ -404,11 +419,15 @@ export default function CatalogoPublicoPage() {
                     Em Estoque
                   </span>
 
-                  <img 
-                    src={p.imagem_url || "/logo.png"} 
-                    alt={p.nome} 
-                    className={`w-full h-full filter group-hover:scale-110 transition-transform duration-500 ${p.imagem_url ? 'object-cover' : 'object-contain drop-shadow-md'}`} 
-                  />
+                  <div className="relative w-full h-full group-hover:scale-110 transition-transform duration-500">
+                    <Image 
+                      src={p.imagem_url || "/logo.png"} 
+                      alt={p.nome} 
+                      fill
+                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                      className={`filter ${p.imagem_url ? 'object-cover' : 'object-contain drop-shadow-md'}`} 
+                    />
+                  </div>
                   
                   {/* Quick Add Overlay on desktop (optional visual flair) */}
                   <div className="absolute inset-0 bg-[#1a3a70]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
@@ -471,8 +490,13 @@ export default function CatalogoPublicoPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
-              <div className="h-10 w-auto mb-4 grayscale opacity-70">
-                <img src="/logo.png" alt="Gama Variedades Logo" className="h-full object-contain" />
+              <div className="relative h-12 w-40 mb-4 grayscale opacity-70">
+                <Image 
+                  src="/logo.png" 
+                  alt="Gama Variedades Logo" 
+                  fill
+                  className="object-contain" 
+                />
               </div>
               <p className="text-sm text-gray-500 font-medium max-w-sm mb-6">
                 A Gama Variedades traz o melhor do cenário urbano e utilitário diretamente para você. Qualidade garantida e excelência.
@@ -607,8 +631,13 @@ export default function CatalogoPublicoPage() {
                 <div className="flex flex-col gap-6">
                   {cart.map(item => (
                     <div key={item.id} className="flex gap-4">
-                      <div className="h-20 w-20 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-center flex-none p-2 overflow-hidden">
-                         <img src={item.imagem_url || "/logo.png"} alt={item.nome} className={`w-full h-full ${item.imagem_url ? 'object-cover' : 'object-contain'}`} />
+                      <div className="relative h-20 w-20 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-center flex-none p-2 overflow-hidden">
+                         <Image 
+                           src={item.imagem_url || "/logo.png"} 
+                           alt={item.nome} 
+                           fill
+                           className={item.imagem_url ? 'object-cover' : 'object-contain'} 
+                         />
                       </div>
                       <div className="flex-1 flex flex-col">
                         <h4 className="text-sm font-bold text-[#1a3a70] line-clamp-2 leading-tight pr-4 relative">
