@@ -25,7 +25,10 @@ export default function CatalogoPublicoPage() {
   useEffect(() => {
     fetchProdutos();
     const savedCart = localStorage.getItem('gama-public-cart');
-    if (savedCart) setCart(JSON.parse(savedCart));
+    if (savedCart) {
+      try { setCart(JSON.parse(savedCart)); }
+      catch { localStorage.removeItem('gama-public-cart'); }
+    }
   }, []);
 
   const fetchProdutos = async () => {
@@ -50,6 +53,12 @@ export default function CatalogoPublicoPage() {
   const addToCart = (product: any) => {
     const qtyToAdd = productQuantities[product.id] || 1;
     const existing = cart.find(item => item.id === product.id);
+    
+    if ((existing?.quantidade || 0) + qtyToAdd > product.estoque) {
+      showToast(`Temos apenas ${product.estoque} unidades disponíveis!`, "error");
+      return;
+    }
+
     let newCart;
     if (existing) {
       newCart = cart.map(item => item.id === product.id ? { ...item, quantidade: item.quantidade + qtyToAdd } : item);
@@ -65,9 +74,11 @@ export default function CatalogoPublicoPage() {
   };
 
   const updateProductQty = (id: string, delta: number) => {
+    const product = produtos.find(p => p.id === id);
+    if (!product) return;
     setProductQuantities(prev => {
       const current = prev[id] || 1;
-      const next = Math.max(1, current + delta);
+      const next = Math.max(1, Math.min(current + delta, product.estoque));
       return { ...prev, [id]: next };
     });
   };
@@ -131,6 +142,7 @@ export default function CatalogoPublicoPage() {
           total_venda: total,
           status: 'Aguardando Aprovação',
           items: cart.map(item => ({
+            produto_id: item.id,
             produto: item.nome,
             qtd: item.quantidade,
             preco: item.preco,
@@ -142,6 +154,17 @@ export default function CatalogoPublicoPage() {
         .single();
 
       if (orderErr) throw orderErr;
+
+      // 3. Subtrair estoque
+      for (const item of cart) {
+        const currentProduct = produtos.find(p => p.id === item.id);
+        if (currentProduct) {
+          await supabase
+            .from('produtos')
+            .update({ estoque: currentProduct.estoque - item.quantidade })
+            .eq('id', item.id);
+        }
+      }
 
       // Build WhatsApp message
       const storePhone = "5511988887777"; // Número fictício da loja
