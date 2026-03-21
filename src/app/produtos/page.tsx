@@ -248,7 +248,7 @@ export default function ProdutosPage() {
              <span className="text-[10px] font-black text-[#1a3a70]/40 uppercase tracking-[0.3em]">Gestão de Ativos</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#1a3a70] tracking-tighter leading-none">
-            Inventory <span className="text-[#ff6b35]">Elite</span>
+            Estoque <span className="text-[#ff6b35]">Elite</span>
           </h1>
         </div>
         
@@ -330,7 +330,7 @@ export default function ProdutosPage() {
               <Package size={32} />
             </div>
             <div>
-              <p className="text-[#1a3a70]/40 text-[10px] font-black uppercase tracking-widest mb-1">Total SKUs</p>
+              <p className="text-[#1a3a70]/40 text-[10px] font-black uppercase tracking-widest mb-1">Total Produtos</p>
               <p className="text-4xl font-black text-[#1a3a70] tracking-tighter">{metrics.totalItems}</p>
             </div>
           </div>
@@ -512,7 +512,7 @@ export default function ProdutosPage() {
                    </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <button onClick={clearCart} className="text-white/40 hover:text-white font-black text-[10px] uppercase tracking-widest transition-colors mr-2">Reset</button>
+                  <button onClick={clearCart} className="text-white/40 hover:text-white font-black text-[10px] uppercase tracking-widest transition-colors mr-2">Limpar</button>
                   <button 
                     onClick={() => router.push('/pedidos/novo')}
                     className="px-10 py-5 bg-white text-[#1a3a70] rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-white/10"

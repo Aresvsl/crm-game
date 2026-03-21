@@ -219,7 +219,7 @@ export default function CatalogoPublicoPage() {
             {/* Logo area */}
             <div className="flex items-center gap-3 cursor-pointer">
               <div className="h-12 w-auto">
-                <img src="/logo.png" alt="Gama Bones Logo" className="w-full h-full object-contain drop-shadow-sm" />
+                <img src="/logo.png" alt="Gama Variedades Logo" className="w-full h-full object-contain drop-shadow-sm" />
               </div>
               <div className="hidden sm:block">
                 <h1 className="text-xl font-black text-[#1a3a70] tracking-tight leading-none mb-0.5">GAMA</h1>
@@ -472,7 +472,7 @@ export default function CatalogoPublicoPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <div className="h-10 w-auto mb-4 grayscale opacity-70">
-                <img src="/logo.png" alt="Gama Bones Logo" className="h-full object-contain" />
+                <img src="/logo.png" alt="Gama Variedades Logo" className="h-full object-contain" />
               </div>
               <p className="text-sm text-gray-500 font-medium max-w-sm mb-6">
                 A Gama Variedades traz o melhor do cenário urbano e utilitário diretamente para você. Qualidade garantida e excelência.
