@@ -135,11 +135,7 @@ export default function CatalogoPublicoPage() {
             preco: item.preco,
             subtotal: item.preco * item.quantidade
           })),
-          metadata: {
-            entrega: customerInfo.deliveryMethod,
-            endereco: customerInfo.endereco,
-            pagamento: customerInfo.paymentMethod
-          }
+          data: new Date().toISOString()
         }])
         .select()
         .single();
