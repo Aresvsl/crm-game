@@ -127,6 +127,7 @@ export default function CatalogoPublicoPage() {
         .from('pedidos')
         .insert([{
           cliente_id,
+          cliente: customerInfo.nome,
           total_venda: total,
           status: 'Aguardando Aprovação',
           items: cart.map(item => ({
