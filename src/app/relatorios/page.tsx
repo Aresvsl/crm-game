@@ -27,10 +27,10 @@ export default function RelatatoriosPage() {
   ];
 
   const categoryData = [
-    { name: 'Snapback', value: 45 },
-    { name: 'Trucker', value: 25 },
-    { name: 'Dad Hat', value: 20 },
-    { name: 'Beanie', value: 10 },
+    { name: 'Eletrônicos', value: 45 },
+    { name: 'Utilidades', value: 25 },
+    { name: 'Acessórios', value: 20 },
+    { name: 'Vestuário', value: 10 },
   ];
 
   const COLORS = ['#1a3a70', '#ff6b35', '#2563eb', '#10b981'];
@@ -90,10 +90,10 @@ export default function RelatatoriosPage() {
                </PieChart>
              </ResponsiveContainer>
            </div>
-           <div className="mt-6 space-y-4">
-              <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 text-center">Top Categoria</p>
-              <p className="text-2xl font-black text-[#1a3a70] text-center">Snapback <span className="text-[#ff6b35]">(45%)</span></p>
-           </div>
+            <div className="glass-card p-8 rounded-[2rem] shadow-sm transform hover:scale-105 transition-all animate-in fade-in zoom-in duration-500 delay-100">
+              <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1 text-center">Top Categoria</p>
+              <p className="text-2xl font-black text-[#1a3a70] text-center">Eletrônicos <span className="text-[#ff6b35]">(45%)</span></p>
+            </div>
         </div>
       </div>
 

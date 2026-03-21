@@ -20,7 +20,7 @@ export default function ProdutosPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [newProduto, setNewProduto] = useState<any>({ nome: "", categoria: "Snapback", preco: 0, estoque: 10, preco_antigo: null });
+  const [newProduto, setNewProduto] = useState<any>({ nome: "", categoria: "Eletrônicos", preco: 0, estoque: 10, preco_antigo: null });
   const [editingProduto, setEditingProduto] = useState<any>(null);
   const [metrics, setMetrics] = useState({ totalItems: 0, totalValue: 0, alerts: 0 });
   const [searchTerm, setSearchTerm] = useState("");
@@ -65,11 +65,11 @@ export default function ProdutosPage() {
     setLoading(true);
     if (isDemoMode) {
       const mockData = [
-        { id: "1", nome: "Boné Snapback Classic Onyx", categoria: "Snapback", preco: 129.90, preco_antigo: 159.90, estoque: 45 },
-        { id: "2", nome: "Boné Trucker Mesh White/Navy", categoria: "Trucker", preco: 85.00, estoque: 8 },
-        { id: "3", nome: "Dad Hat Retro Suede Brown", categoria: "Dad Hat", preco: 150.00, estoque: 12 },
-        { id: "4", nome: "Beanie Winter Wool Grey", categoria: "Beanie", preco: 65.00, estoque: 82 },
-        { id: "5", nome: "Boné Snapback Crimson", categoria: "Snapback", preco: 115.00, estoque: 25 },
+        { id: "1", nome: "Smartwatch Pro Series 9", categoria: "Eletrônicos", preco: 129.90, preco_antigo: 159.90, estoque: 45 },
+        { id: "2", nome: "Garrafa Térmica Aço Inox 1L", categoria: "Utilidades", preco: 85.00, estoque: 8 },
+        { id: "3", nome: "Óculos de Sol Polarizado UV400", categoria: "Acessórios", preco: 150.00, estoque: 12 },
+        { id: "4", nome: "Camiseta Básica Algodão Egípcio", categoria: "Vestuário", preco: 65.00, estoque: 82 },
+        { id: "5", nome: "Fone Bluetooth Intra-auricular", categoria: "Eletrônicos", preco: 115.00, estoque: 25 },
       ];
       setProdutos(mockData);
       calculateMetrics(mockData);
@@ -90,11 +90,11 @@ export default function ProdutosPage() {
     const alerts = data.filter(p => p.estoque < 10).length;
     setMetrics({ totalItems: total, totalValue: value, alerts });
 
-    const cats = ["Snapback", "Trucker", "Dad Hat", "Beanie"];
+    const cats = ["Eletrônicos", "Utilidades", "Acessórios", "Vestuário"];
     const stats = cats.map(c => ({
       name: c,
       count: data.filter(p => p.categoria === c).reduce((acc, p) => acc + p.estoque, 0),
-      color: c === "Snapback" ? "#1a3a70" : c === "Trucker" ? "#ff6b35" : c === "Dad Hat" ? "#818cf8" : "#f59e0b"
+      color: c === "Eletrônicos" ? "#1a3a70" : c === "Utilidades" ? "#ff6b35" : c === "Acessórios" ? "#818cf8" : "#f59e0b"
     }));
     setCategoryStats(stats);
   };
@@ -203,7 +203,7 @@ export default function ProdutosPage() {
         <div className="flex flex-wrap items-center gap-3">
           <button 
             onClick={() => {
-               setNewProduto({ nome: "", categoria: "Snapback", preco: 0, estoque: 10, preco_antigo: null });
+               setNewProduto({ nome: "", categoria: "Eletrônicos", preco: 0, estoque: 10, preco_antigo: null });
                setModalOpen(true);
             }}
             className="flex items-center gap-3 px-10 py-5 bg-[#ff6b35] text-white rounded-[1.5rem] font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-orange-500/30 group"
@@ -323,7 +323,7 @@ export default function ProdutosPage() {
           </div>
           
           <div className="flex flex-wrap gap-2 items-center bg-white/60 border border-white/80 p-2 rounded-[2.2rem]">
-            {["Todas", "Snapback", "Trucker", "Dad Hat", "Beanie"].map(cat => (
+            {["Todas", "Eletrônicos", "Utilidades", "Acessórios", "Vestuário"].map(cat => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
@@ -478,7 +478,7 @@ export default function ProdutosPage() {
               <p className="text-xs font-bold text-[#1a3a70]/70 leading-snug">Insira os detalhes técnicos para catalogar o novo produto no sistema elite.</p>
            </div>
           <FormInput label="NOME DO MODELO" placeholder="Ex: PRODUTO XYZ" value={newProduto.nome} onChange={(e) => setNewProduto({...newProduto, nome: e.target.value})} />
-          <PremiumSelect label="CATEGORIA" value={newProduto.categoria} options={["Snapback", "Trucker", "Dad Hat", "Beanie"].map(c => ({value: c, label: c}))} onChange={(val) => setNewProduto({...newProduto, categoria: val})} />
+          <PremiumSelect label="CATEGORIA" value={newProduto.categoria} options={["Eletrônicos", "Utilidades", "Acessórios", "Vestuário"].map(c => ({value: c, label: c}))} onChange={(val) => setNewProduto({...newProduto, categoria: val})} />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <FormInput label="DE: PREÇO ANTIGO" type="number" value={newProduto.preco_antigo || ""} onChange={(e) => setNewProduto({...newProduto, preco_antigo: e.target.value ? Number(e.target.value) : null})} />
             <FormInput label="POR: VALOR VENDA" type="number" value={newProduto.preco} onChange={(e) => setNewProduto({...newProduto, preco: Number(e.target.value)})} />

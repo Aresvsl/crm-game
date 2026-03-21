@@ -42,8 +42,8 @@ export default function NovoPedidoPage() {
         { id: "2", nome: "Maria Demo (MOCK)" }
       ]);
       setProdutos([
-        { id: "1", nome: "Boné Snapback (MOCK)", preco: 89.90, estoque: 45 },
-        { id: "2", nome: "Boné Trucker (MOCK)", preco: 75.00, estoque: 157 }
+        { id: "1", nome: "Smartwatch Pro (MOCK)", preco: 89.90, estoque: 45 },
+        { id: "2", nome: "Garrafa Térmica (MOCK)", preco: 75.00, estoque: 157 }
       ]);
       setLoading(false);
       return;

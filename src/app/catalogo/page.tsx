@@ -41,10 +41,10 @@ export default function CatalogoPublicoPage() {
     if (isDemoMode) {
       setTimeout(() => {
         setProdutos([
-          { id: "1", nome: "Boné Snapback Classic", categoria: "Snapback", preco: 89.90, preco_antigo: 119.90, estoque: 45 },
-          { id: "2", nome: "Boné Trucker Mesh", categoria: "Trucker", preco: 75.00, estoque: 157 },
-          { id: "3", nome: "Dad Hat Retro", categoria: "Dad Hat", preco: 120.00, estoque: 5 },
-          { id: "4", nome: "Beanie Winter", categoria: "Beanie", preco: 65.00, estoque: 89 },
+          { id: "1", nome: "Smartwatch Pro Series 9", categoria: "Eletrônicos", preco: 89.90, preco_antigo: 119.90, estoque: 45 },
+          { id: "2", nome: "Garrafa Térmica Aço Inox 1L", categoria: "Utilidades", preco: 75.00, estoque: 157 },
+          { id: "3", nome: "Óculos de Sol Polarizado UV400", categoria: "Acessórios", preco: 120.00, estoque: 5 },
+          { id: "4", nome: "Camiseta Básica Algodão Egípcio", categoria: "Vestuário", preco: 65.00, estoque: 89 },
         ]);
         setLoading(false);
       }, 800);
@@ -342,7 +342,7 @@ export default function CatalogoPublicoPage() {
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
         {/* Category Scroll */}
         <div className="flex items-center gap-3 overflow-x-auto pb-6 scrollbar-hide border-b border-gray-200 mb-8">
-          {["Todas", "Snapback", "Trucker", "Dad Hat", "Beanie"].map(cat => (
+          {["Todas", "Eletrônicos", "Utilidades", "Acessórios", "Vestuário"].map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}

@@ -33,8 +33,8 @@ export default function PedidosPage() {
           id: "1001", data: "2026-03-15", total_venda: 450.00, status: "Em Produção", 
           clientes: { nome: "João Silva (MOCK)", email: "joao@mock.com", telefone: "(11) 99999-9999" }, 
           items: [
-            { produto: "Snapback Classic", qtd: 3, preco: 89.90, subtotal: 269.70 },
-            { produto: "Trucker Mesh", qtd: 2, preco: 90.15, subtotal: 180.30 }
+            { produto: "Smartwatch Pro Series 9", qtd: 3, preco: 89.90, subtotal: 269.70 },
+            { produto: "Fone Bluetooth Intra", qtd: 2, preco: 90.15, subtotal: 180.30 }
           ],
           created_at: "2026-03-15T10:00:00Z" 
         },
@@ -42,7 +42,7 @@ export default function PedidosPage() {
           id: "1002", data: "2026-03-16", total_venda: 1200.00, status: "Aberto", 
           clientes: { nome: "Maria Oliveira (MOCK)", email: "maria@demo.com", telefone: "(21) 88888-8888" }, 
           items: [
-            { produto: "Dad Hat Retro", qtd: 10, preco: 120.00, subtotal: 1200.00 }
+            { produto: "Garrafa Térmica 1L", qtd: 10, preco: 120.00, subtotal: 1200.00 }
           ],
           created_at: "2026-03-16T11:30:00Z" 
         },
