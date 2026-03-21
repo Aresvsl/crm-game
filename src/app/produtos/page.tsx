@@ -142,8 +142,17 @@ export default function ProdutosPage() {
 
   const handleAdd = async () => {
     if (!newProduto.nome || newProduto.preco <= 0) return;
+    
+    // Transforma strings vazias do form em null/0 pro banco
+    const payload = {
+      ...newProduto,
+      preco_antigo: newProduto.preco_antigo === "" ? null : newProduto.preco_antigo,
+      preco: newProduto.preco === "" ? 0 : newProduto.preco,
+      estoque: newProduto.estoque === "" ? 0 : newProduto.estoque
+    };
+    
     if (isDemoMode) {
-      const mockNew = { ...newProduto, id: Math.random().toString() };
+      const mockNew = { ...payload, id: Math.random().toString() };
       const updated = [...produtos, mockNew];
       setProdutos(updated);
       calculateMetrics(updated);
@@ -151,7 +160,7 @@ export default function ProdutosPage() {
       setModalOpen(false);
       return;
     }
-    const { data, error } = await supabase.from('produtos').insert([newProduto]).select();
+    const { data, error } = await supabase.from('produtos').insert([payload]).select();
     if (error) {
       showToast(`Erro no banco: ${error.message} (Code: ${error.code})`, "error");
       console.error("SUPABASE ERROR:", error);
@@ -165,13 +174,21 @@ export default function ProdutosPage() {
   };
 
   const handleUpdate = async () => {
+    // Transforma strings vazias do form em null/0 pro banco
+    const payload = {
+      ...editingProduto,
+      preco_antigo: editingProduto.preco_antigo === "" ? null : editingProduto.preco_antigo,
+      preco: editingProduto.preco === "" ? 0 : editingProduto.preco,
+      estoque: editingProduto.estoque === "" ? 0 : editingProduto.estoque
+    };
+
     if (isDemoMode) {
-      const updated = produtos.map(p => p.id === editingProduto.id ? editingProduto : p);
+      const updated = produtos.map(p => p.id === payload.id ? payload : p);
       setProdutos(updated); calculateMetrics(updated);
       setEditModalOpen(false); showToast("Produto atualizado!");
       return;
     }
-    const { error } = await supabase.from('produtos').update(editingProduto).eq('id', editingProduto.id);
+    const { error } = await supabase.from('produtos').update(payload).eq('id', payload.id);
     if (error) {
        showToast(`Erro ao atualizar: ${error.message}`, "error");
        console.error("SUPABASE ERROR:", error);
