@@ -53,15 +53,17 @@ export default function PedidosPage() {
     // Fetch orders and join with customer name
     const { data, error } = await supabase
       .from('pedidos')
-      .select(`
-        *,
-        clientes (
-          nome
-        )
-      `)
+      .select('*')
       .order('created_at', { ascending: false });
 
+    if (error) {
+      console.error("SUPABASE FETCH ERROR:", error);
+      showToast(`Erro ao carregar pedidos: ${error.message}`, "error");
+    }
+
     if (data) {
+      // If we have a 'cliente' string column (from direct insert), we can use it.
+      // We try to enrich with customer names if possible, but let's keep it simple first.
       setPedidos(data);
     }
     setLoading(false);
@@ -135,7 +137,7 @@ export default function PedidosPage() {
   const dataForTable = pedidos.map(p => ({
     ...p,
     displayId: p.id.length > 8 ? `#${p.id.slice(0, 8)}` : `#${p.id}`,
-    cliente: p.clientes?.nome || 'N/A',
+    cliente: p.clientes?.nome || p.cliente || 'N/A',
     data: format(new Date(p.created_at), "dd/MM/yyyy", { locale: ptBR }),
     total: `R$ ${p.total_venda.toFixed(2)}`,
     statusDisplay: <span key={p.id} className={getStatusStyle(p.status)}>{p.status}</span>
@@ -202,7 +204,7 @@ export default function PedidosPage() {
             <div className="grid grid-cols-2 gap-6 p-6 rounded-2xl bg-gray-50 border border-gray-100">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Cliente</p>
-                <p className="font-bold text-[#1a3a70]">{selectedOrder.clientes?.nome}</p>
+                  <p className="font-bold text-[#1a3a70]">{selectedOrder.clientes?.nome || selectedOrder.cliente || 'N/A'}</p>
                 <p className="text-xs text-gray-500">{selectedOrder.clientes?.email}</p>
               </div>
               <div>
