@@ -20,7 +20,7 @@ export default function ProdutosPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [newProduto, setNewProduto] = useState<any>({ nome: "", categoria: "Eletrônicos", preco: 0, estoque: 10, preco_antigo: null, imagem_url: null });
+  const [newProduto, setNewProduto] = useState<any>({ nome: "", categoria: "Eletrônicos", preco: "", estoque: "", preco_antigo: "", imagem_url: null });
   const [editingProduto, setEditingProduto] = useState<any>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [metrics, setMetrics] = useState({ totalItems: 0, totalValue: 0, alerts: 0 });
@@ -238,7 +238,7 @@ export default function ProdutosPage() {
         <div className="flex flex-wrap items-center gap-3">
           <button 
             onClick={() => {
-               setNewProduto({ nome: "", categoria: "Eletrônicos", preco: 0, estoque: 10, preco_antigo: null });
+               setNewProduto({ nome: "", categoria: "Eletrônicos", preco: "", estoque: "", preco_antigo: "", imagem_url: null });
                setModalOpen(true);
             }}
             className="flex items-center gap-3 px-10 py-5 bg-[#ff6b35] text-white rounded-[1.5rem] font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-orange-500/30 group"
@@ -541,9 +541,9 @@ export default function ProdutosPage() {
           <FormInput label="NOME DO MODELO" placeholder="Ex: PRODUTO XYZ" value={newProduto.nome} onChange={(e) => setNewProduto({...newProduto, nome: e.target.value})} />
           <PremiumSelect label="CATEGORIA" value={newProduto.categoria} options={["Eletrônicos", "Utilidades", "Acessórios", "Vestuário"].map(c => ({value: c, label: c}))} onChange={(val) => setNewProduto({...newProduto, categoria: val})} />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <FormInput label="DE: PREÇO ANTIGO" type="number" value={newProduto.preco_antigo || ""} onChange={(e) => setNewProduto({...newProduto, preco_antigo: e.target.value ? Number(e.target.value) : null})} />
-            <FormInput label="POR: VALOR VENDA" type="number" value={newProduto.preco} onChange={(e) => setNewProduto({...newProduto, preco: Number(e.target.value)})} />
-            <FormInput label="ESTOQUE INICIAL" type="number" value={newProduto.estoque} onChange={(e) => setNewProduto({...newProduto, estoque: Number(e.target.value)})} />
+            <FormInput label="DE: PREÇO ANTIGO" type="number" value={newProduto.preco_antigo} onChange={(e) => setNewProduto({...newProduto, preco_antigo: e.target.value === '' ? '' : Number(e.target.value)})} />
+            <FormInput label="POR: VALOR VENDA" type="number" value={newProduto.preco} onChange={(e) => setNewProduto({...newProduto, preco: e.target.value === '' ? '' : Number(e.target.value)})} />
+            <FormInput label="ESTOQUE INICIAL" type="number" value={newProduto.estoque} onChange={(e) => setNewProduto({...newProduto, estoque: e.target.value === '' ? '' : Number(e.target.value)})} />
           </div>
           <button onClick={handleAdd} className="w-full bg-[#1a3a70] text-white p-6 rounded-[1.5rem] font-black text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-2xl">Confirmar Cadastro</button>
         </div>
@@ -575,9 +575,9 @@ export default function ProdutosPage() {
               </div>
               <FormInput label="NOME DO MODELO" value={editingProduto.nome} onChange={(e) => setEditingProduto({...editingProduto, nome: e.target.value})} />
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <FormInput label="DE: PREÇO ANTIGO" type="number" value={editingProduto.preco_antigo || ""} onChange={(e) => setEditingProduto({...editingProduto, preco_antigo: e.target.value ? Number(e.target.value) : null})} />
-                <FormInput label="POR: VENDA ATUAL" type="number" value={editingProduto.preco} onChange={(e) => setEditingProduto({...editingProduto, preco: Number(e.target.value)})} />
-                <FormInput label="ESTOQUE ATUAL" type="number" value={editingProduto.estoque} onChange={(e) => setEditingProduto({...editingProduto, estoque: Number(e.target.value)})} />
+                <FormInput label="DE: PREÇO ANTIGO" type="number" value={editingProduto.preco_antigo} onChange={(e) => setEditingProduto({...editingProduto, preco_antigo: e.target.value === '' ? '' : Number(e.target.value)})} />
+                <FormInput label="POR: VENDA ATUAL" type="number" value={editingProduto.preco} onChange={(e) => setEditingProduto({...editingProduto, preco: e.target.value === '' ? '' : Number(e.target.value)})} />
+                <FormInput label="ESTOQUE ATUAL" type="number" value={editingProduto.estoque} onChange={(e) => setEditingProduto({...editingProduto, estoque: e.target.value === '' ? '' : Number(e.target.value)})} />
               </div>
               <button onClick={handleUpdate} className="w-full bg-[#1a3a70] text-white p-6 rounded-[1.5rem] font-black text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-2xl">Salvar Alterações</button>
             </>
