@@ -221,49 +221,69 @@ export default function CatalogoPublicoPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {filteredProdutos.map(p => (
-                <div key={p.id} className="glass-card group hover:shadow-2xl hover:shadow-[#1a3a70]/10 transition-all duration-500 rounded-[2.5rem] overflow-hidden border border-white/60 flex flex-col h-full bg-white/40">
-                  <div className="aspect-square bg-linear-to-br from-gray-50 to-white relative overflow-hidden">
-                     <div className="absolute inset-0 flex items-center justify-center p-12">
-                        <div className="text-[#1a3a70]/5 group-hover:scale-110 group-hover:text-[#1a3a70]/10 transition-all duration-700">
-                          <Package size={140} strokeWidth={0.5} />
-                        </div>
+                <div key={p.id} className="bg-white rounded-[2rem] p-4 flex flex-col h-full shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(26,58,112,0.12)] transition-all duration-500 border border-transparent hover:border-blue-50 group">
+                  <div className="aspect-[4/3] bg-[#f8fafc] rounded-3xl relative overflow-hidden mb-6 flex items-center justify-center">
+                     {/* Premium Background Pattern */}
+                     <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-100 to-transparent" />
+                     
+                     {/* Brand Watermark / Placeholder */}
+                     <div className="relative z-10 w-32 h-32 opacity-10 group-hover:scale-110 group-hover:opacity-20 transition-all duration-700 grayscale">
+                        <img src="/logo.png" alt="Produto" className="w-full h-full object-contain" />
                      </div>
-                     <span className="absolute top-6 right-6 px-4 py-1.5 bg-white/80 backdrop-blur-md rounded-full text-[10px] font-black text-[#1a3a70] uppercase tracking-widest border border-white/60 shadow-sm">
-                        {p.categoria}
-                      </span>
-                  </div>
-                  <div className="p-8 flex-1 flex flex-col">
-                    <h3 className="text-xl font-black text-[#1a3a70] tracking-tight group-hover:text-[#ff6b35] transition-colors mb-4 line-clamp-1">{p.nome}</h3>
-                    <div className="flex items-end justify-between mt-auto">
-                      <div>
-                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 opacity-50">Preço Especial</p>
-                        <p className="text-2xl font-black text-[#1a3a70]">R$ {p.preco.toFixed(2)}</p>
-                      </div>
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center h-12 bg-gray-100/50 rounded-2xl px-2 border border-white shadow-inner">
-                        <button 
-                          onClick={() => updateProductQty(p.id, -1)}
-                          className="h-9 w-9 flex items-center justify-center hover:bg-white rounded-xl transition-all text-[#1a3a70] font-black hover:shadow-sm"
-                        >
-                          -
-                        </button>
-                        <span className="w-10 text-center text-sm font-black text-[#1a3a70] tabular-nums">
-                          {productQuantities[p.id] || 1}
+                     
+                     <div className="absolute top-4 left-4">
+                       <span className="px-3 py-1 bg-white/80 backdrop-blur-md rounded-full text-[9px] font-black text-[#1a3a70] uppercase tracking-widest border border-white/60 shadow-xs">
+                          {p.categoria}
                         </span>
+                     </div>
+                  </div>
+                  
+                  <div className="flex-1 flex flex-col px-2">
+                    <h3 className="text-lg font-black text-[#1a3a70] tracking-tight mb-2 line-clamp-2 leading-tight group-hover:text-blue-800 transition-colors">
+                      {p.nome}
+                    </h3>
+                    
+                    <div className="mt-auto pt-6 flex flex-col gap-4">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                          <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Pronta Entrega</p>
+                        </div>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-sm font-bold text-[#1a3a70]/50 tracking-tighter">R$</span>
+                          <span className="text-3xl font-black text-[#1a3a70] tracking-tighter">{p.preco.toFixed(2)}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-2 bg-[#f8fafc] p-1.5 rounded-2xl border border-gray-100">
+                        <div className="flex items-center flex-1 justify-between bg-white rounded-xl shadow-xs border border-gray-50 h-10 px-1">
+                          <button 
+                            onClick={() => updateProductQty(p.id, -1)}
+                            className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-gray-50 text-gray-500 hover:text-[#1a3a70] transition-colors"
+                          >
+                            <span className="w-3 h-0.5 bg-current rounded-full" />
+                          </button>
+                          <span className="w-6 text-center text-sm font-black text-[#1a3a70] tabular-nums">
+                            {productQuantities[p.id] || 1}
+                          </span>
+                          <button 
+                            onClick={() => updateProductQty(p.id, 1)}
+                            className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-gray-50 text-gray-500 hover:text-[#1a3a70] transition-colors"
+                          >
+                            <span className="w-3 h-3 relative flex items-center justify-center">
+                              <span className="absolute w-3 h-0.5 bg-current rounded-full" />
+                              <span className="absolute w-0.5 h-3 bg-current rounded-full" />
+                            </span>
+                          </button>
+                        </div>
+                        
                         <button 
-                          onClick={() => updateProductQty(p.id, 1)}
-                          className="h-9 w-9 flex items-center justify-center hover:bg-white rounded-xl transition-all text-[#1a3a70] font-black hover:shadow-sm"
+                          onClick={() => addToCart(p)}
+                          className="h-10 w-12 flex-none bg-[#1a3a70] text-white rounded-xl flex items-center justify-center hover:bg-[#ff6b35] hover:scale-105 active:scale-95 transition-all shadow-md shadow-blue-900/10 group/btn"
                         >
-                          +
+                          <ShoppingCart size={16} strokeWidth={2.5} className="group-hover/btn:-rotate-12 transition-transform duration-300" />
                         </button>
                       </div>
-                      <button 
-                        onClick={() => addToCart(p)}
-                        className="h-12 w-12 flex-none bg-[#1a3a70] text-white rounded-2xl flex items-center justify-center hover:bg-[#ff6b35] hover:rotate-12 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-blue-900/10"
-                      >
-                        <ShoppingCart size={20} />
-                      </button>
-                    </div>
                     </div>
                   </div>
                 </div>
