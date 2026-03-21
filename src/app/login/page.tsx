@@ -88,7 +88,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-50">
+    <div className="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 p-6 md:p-12 relative overflow-hidden bg-slate-50">
       {/* Background Shapes */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#ff6b35]/5 rounded-full blur-3xl animate-float" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#1a3a70]/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '-3s' }} />
@@ -212,6 +212,61 @@ export default function LoginPage() {
         <p className="text-center mt-10 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
           Problemas de acesso? <a href="#" className="text-[#ff6b35]">Contate o suporte</a>
         </p>
+      </div>
+
+      {/* Release Notes / Changelog Panel */}
+      <div className="glass-card w-full max-w-md lg:max-w-xl p-10 rounded-[2.5rem] relative z-10 animate-in fade-in slide-in-from-right-12 duration-1000 delay-300">
+        <div className="flex items-center gap-5 mb-10">
+          <div className="h-14 w-14 bg-white rounded-2xl flex items-center justify-center shadow-2xl shadow-gray-200/50 border border-gray-100">
+            <span className="text-3xl">✨</span>
+          </div>
+          <div>
+            <h2 className="text-xl md:text-2xl font-black text-[#1a3a70] tracking-tighter uppercase">Release Notes</h2>
+            <p className="text-[10px] font-black text-[#ff6b35] uppercase tracking-[0.2em] bg-orange-50/80 border border-orange-100 inline-block px-3 py-1 rounded-lg mt-1">v2.1.0 • E-commerce Elite</p>
+          </div>
+        </div>
+
+        <div className="space-y-8">
+          <div className="space-y-2 group">
+            <h3 className="text-xs font-black text-[#1a3a70] uppercase tracking-widest flex items-center gap-3">
+              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">➕</span> 
+              Catálogo Inteligente
+            </h3>
+            <p className="text-sm text-gray-500 leading-relaxed pl-9 group-hover:text-gray-700 transition-colors">
+              O catálogo público foi completamente reformulado. Agora possui um carrinho de compras integrado, <strong>bloqueio dinâmico de compras sem estoque</strong> e formatação visual imersiva.
+            </p>
+          </div>
+
+          <div className="space-y-2 group">
+            <h3 className="text-xs font-black text-[#1a3a70] uppercase tracking-widest flex items-center gap-3">
+              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-green-100 text-[#25D366]">💬</span> 
+              Expresso WhatsApp
+            </h3>
+            <p className="text-sm text-gray-500 leading-relaxed pl-9 group-hover:text-gray-700 transition-colors">
+              Pedidos validados via catálogo são interceptados, formatados com todos os dados do cliente (Nome, Cidade, Endereço e Meio de Pagamento) e disparados prontos para o WhatsApp oficial da loja.
+            </p>
+          </div>
+
+          <div className="space-y-2 group">
+            <h3 className="text-xs font-black text-[#1a3a70] uppercase tracking-widest flex items-center gap-3">
+              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-blue-600">🛡️</span> 
+              Estabilidade CRM
+            </h3>
+            <p className="text-sm text-gray-500 leading-relaxed pl-9 group-hover:text-gray-700 transition-colors">
+              Implementação de travas de segurança na criação manual de pedidos no painel interno, <strong>impedindo que operadores selecionem produtos esgotados</strong>. Vacina contra corrupção de cache habilitada.
+            </p>
+          </div>
+
+          <div className="space-y-2 group">
+            <h3 className="text-xs font-black text-[#1a3a70] uppercase tracking-widest flex items-center gap-3">
+              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-purple-100 text-purple-600">🎨</span> 
+              Design System & UX
+            </h3>
+            <p className="text-sm text-gray-500 leading-relaxed pl-9 group-hover:text-gray-700 transition-colors">
+              Substituição de emojis por ícones vetorizados de alta resolução (PIX, Cartões, IG) e injeção de <i>Políticas de Troca e FAQ</i> em modais flutuantes no rodapé da loja.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
