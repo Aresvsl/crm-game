@@ -17,7 +17,7 @@ export default function CatalogoPublicoPage() {
   const [selectedCategory, setSelectedCategory] = useState("Todas");
   const [cart, setCart] = useState<{ id: string, nome: string, preco: number, quantidade: number }[]>([]);
   const [isCheckoutModalOpen, setCheckoutModalOpen] = useState(false);
-  const [customerInfo, setCustomerInfo] = useState({ nome: "", whatsapp: "", deliveryMethod: "retirada", endereco: "", paymentMethod: "pix" });
+  const [customerInfo, setCustomerInfo] = useState({ nome: "", whatsapp: "", cidade: "", deliveryMethod: "retirada", endereco: "", paymentMethod: "pix" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [productQuantities, setProductQuantities] = useState<Record<string, number>>({});
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -89,8 +89,8 @@ export default function CatalogoPublicoPage() {
   };
 
   const handleCheckout = async () => {
-    if (!customerInfo.nome || !customerInfo.whatsapp) {
-      showToast("Por favor, preencha seu nome e WhatsApp", "error");
+    if (!customerInfo.nome || !customerInfo.whatsapp || !customerInfo.cidade) {
+      showToast("Por favor, preencha todos os seus dados iniciais", "error");
       return;
     }
 
@@ -170,7 +170,8 @@ export default function CatalogoPublicoPage() {
       const storePhone = "5588997285655"; // Número oficial da loja
       let msg = `*NOVO PEDIDO GAMA BONÉS* 🧢\n\n`;
       msg += `*Cliente:* ${customerInfo.nome}\n`;
-      msg += `*Telefone:* ${customerInfo.whatsapp}\n\n`;
+      msg += `*Telefone:* ${customerInfo.whatsapp}\n`;
+      msg += `*Cidade:* ${customerInfo.cidade}\n\n`;
       msg += `*ITENS:*\n`;
       cart.forEach(item => {
         msg += `- ${item.quantidade}x ${item.nome} (R$ ${item.preco.toFixed(2)})\n`;
@@ -634,6 +635,12 @@ export default function CatalogoPublicoPage() {
               placeholder="Ex: (11) 99999-9999"
               value={customerInfo.whatsapp}
               onChange={(e) => setCustomerInfo({...customerInfo, whatsapp: e.target.value})}
+            />
+            <FormInput 
+              label="Sua Cidade e Estado" 
+              placeholder="Ex: Juazeiro do Norte - CE"
+              value={customerInfo.cidade}
+              onChange={(e) => setCustomerInfo({...customerInfo, cidade: e.target.value})}
             />
           </div>
 
