@@ -10,7 +10,7 @@ import { PremiumSelect } from "@/components/PremiumSelect";
 import { supabase, isDemoMode } from "@/lib/supabase";
 import { useToast } from "@/contexts/ToastContext";
 import { TableSkeleton } from "@/components/Skeleton";
-import { Search, Package, Share2, ShoppingCart, FileText, Plus, AlertCircle, TrendingUp, DollarSign, LayoutGrid, List } from "lucide-react";
+import { Search, Package, Share2, ShoppingCart, FileText, Plus, AlertCircle, TrendingUp, DollarSign, LayoutGrid, List, Image as ImageIcon, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function ProdutosPage() {
@@ -20,13 +20,14 @@ export default function ProdutosPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [newProduto, setNewProduto] = useState<any>({ nome: "", categoria: "Eletrônicos", preco: 0, estoque: 10, preco_antigo: null });
+  const [newProduto, setNewProduto] = useState<any>({ nome: "", categoria: "Eletrônicos", preco: 0, estoque: 10, preco_antigo: null, imagem_url: null });
   const [editingProduto, setEditingProduto] = useState<any>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [metrics, setMetrics] = useState({ totalItems: 0, totalValue: 0, alerts: 0 });
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todas");
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
-  const [cart, setCart] = useState<{ id: string, nome: string, preco: number, quantidade: number }[]>([]);
+  const [cart, setCart] = useState<{ id: string, nome: string, preco: number, quantidade: number, imagem_url?: string }[]>([]);
   const [categoryStats, setCategoryStats] = useState<any[]>([]);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function ProdutosPage() {
     if (existing) {
       newCart = cart.map(item => item.id === product.id ? { ...item, quantidade: item.quantidade + 1 } : item);
     } else {
-      newCart = [...cart, { id: product.id, nome: product.nome, preco: product.preco, quantidade: 1 }];
+      newCart = [...cart, { id: product.id, nome: product.nome, preco: product.preco, quantidade: 1, imagem_url: product.imagem_url }];
     }
     setCart(newCart);
     localStorage.setItem('gama-cart', JSON.stringify(newCart));
@@ -59,6 +60,40 @@ export default function ProdutosPage() {
   const clearCart = () => {
     setCart([]);
     localStorage.removeItem('gama-cart');
+  };
+
+  const handleImageUpload = async (file: File | null, isEdit = false) => {
+    if (!file) return;
+    if (isDemoMode) {
+       showToast("Upload indisponível no modo demonstração", "info");
+       return;
+    }
+    setUploadingImage(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('produtos')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('produtos').getPublicUrl(filePath);
+
+      if (isEdit) {
+        setEditingProduto({ ...editingProduto, imagem_url: publicUrl });
+      } else {
+        setNewProduto({ ...newProduto, imagem_url: publicUrl });
+      }
+      showToast("Imagem enviada com sucesso!");
+    } catch (error: any) {
+      showToast(`Erro no upload: ${error.message}`, "error");
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const fetchProdutos = async () => {
@@ -389,7 +424,11 @@ export default function ProdutosPage() {
             {filteredProdutos.map(p => (
               <div key={p.id} className="glass-card group hover:shadow-3xl hover:translate-y-[-8px] transition-all duration-700 rounded-[3rem] overflow-hidden border border-white/80 flex flex-col h-full bg-white/40 backdrop-blur-md">
                 <div className="aspect-[4/3] bg-linear-to-br from-indigo-50 to-white flex items-center justify-center relative overflow-hidden">
-                  <Package size={160} strokeWidth={0.2} className="text-indigo-900/5 group-hover:scale-125 transition-transform duration-1000" />
+                  {p.imagem_url ? (
+                    <img src={p.imagem_url} alt={p.nome} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                  ) : (
+                    <Package size={160} strokeWidth={0.2} className="text-indigo-900/5 group-hover:scale-125 transition-transform duration-1000" />
+                  )}
                   <span className="absolute top-6 right-6 px-4 py-2 bg-white/90 backdrop-blur-md rounded-2xl text-[10px] font-black text-[#1a3a70] uppercase tracking-widest shadow-xl">
                     {p.categoria}
                   </span>
@@ -475,8 +514,30 @@ export default function ProdutosPage() {
               <div className="h-12 w-12 bg-[#1a3a70] rounded-2xl flex items-center justify-center shadow-lg">
                 <Plus size={24} className="text-white" />
               </div>
-              <p className="text-xs font-bold text-[#1a3a70]/70 leading-snug">Insira os detalhes técnicos para catalogar o novo produto no sistema elite.</p>
-           </div>
+               <p className="text-xs font-bold text-[#1a3a70]/70 leading-snug">Insira os detalhes técnicos para catalogar o novo produto no sistema elite.</p>
+            </div>
+          
+          <div className="flex flex-col gap-2">
+            <span className="text-[10px] uppercase font-black tracking-widest text-[#1a3a70] ml-1">Imagem do Produto</span>
+            <div className="border-2 border-dashed border-gray-200 rounded-2xl p-6 text-center hover:bg-gray-50 hover:border-[#1a3a70] transition-all relative overflow-hidden group">
+              {newProduto.imagem_url ? (
+                <div className="relative w-full h-32 flex justify-center">
+                  <img src={newProduto.imagem_url} alt="Preview" className="h-full object-contain rounded-xl" />
+                  <button onClick={(e) => { e.preventDefault(); setNewProduto({...newProduto, imagem_url: null}); }} className="absolute top-0 right-0 p-1 bg-red-500 text-white rounded-full z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <X size={14} />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-32 text-gray-400 gap-2">
+                  <ImageIcon size={32} />
+                  <span className="text-xs font-bold font-sans">Anexar Fotografia</span>
+                  {uploadingImage && <span className="text-[10px] text-[#ff6b35] animate-pulse">Enviando para a nuvem...</span>}
+                </div>
+              )}
+              <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e.target.files?.[0] || null, false)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" disabled={uploadingImage} />
+            </div>
+          </div>
+
           <FormInput label="NOME DO MODELO" placeholder="Ex: PRODUTO XYZ" value={newProduto.nome} onChange={(e) => setNewProduto({...newProduto, nome: e.target.value})} />
           <PremiumSelect label="CATEGORIA" value={newProduto.categoria} options={["Eletrônicos", "Utilidades", "Acessórios", "Vestuário"].map(c => ({value: c, label: c}))} onChange={(val) => setNewProduto({...newProduto, categoria: val})} />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -492,6 +553,26 @@ export default function ProdutosPage() {
         <div className="space-y-8">
           {editingProduto && (
             <>
+              <div className="flex flex-col gap-2">
+                <span className="text-[10px] uppercase font-black tracking-widest text-[#1a3a70] ml-1">Imagem do Produto</span>
+                <div className="border-2 border-dashed border-gray-200 rounded-2xl p-6 text-center hover:bg-gray-50 hover:border-[#1a3a70] transition-all relative overflow-hidden group">
+                  {editingProduto.imagem_url ? (
+                    <div className="relative w-full h-32 flex justify-center">
+                      <img src={editingProduto.imagem_url} alt="Preview" className="h-full object-contain rounded-xl" />
+                      <button onClick={(e) => { e.preventDefault(); setEditingProduto({...editingProduto, imagem_url: null}); }} className="absolute top-0 right-0 p-1 bg-red-500 text-white rounded-full z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <X size={14} />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-32 text-gray-400 gap-2">
+                      <ImageIcon size={32} />
+                      <span className="text-xs font-bold font-sans">Alterar Fotografia</span>
+                      {uploadingImage && <span className="text-[10px] text-[#ff6b35] animate-pulse">Enviando para a nuvem...</span>}
+                    </div>
+                  )}
+                  <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e.target.files?.[0] || null, true)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" disabled={uploadingImage} />
+                </div>
+              </div>
               <FormInput label="NOME DO MODELO" value={editingProduto.nome} onChange={(e) => setEditingProduto({...editingProduto, nome: e.target.value})} />
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <FormInput label="DE: PREÇO ANTIGO" type="number" value={editingProduto.preco_antigo || ""} onChange={(e) => setEditingProduto({...editingProduto, preco_antigo: e.target.value ? Number(e.target.value) : null})} />

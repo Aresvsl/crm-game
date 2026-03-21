@@ -15,7 +15,7 @@ export default function CatalogoPublicoPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todas");
-  const [cart, setCart] = useState<{ id: string, nome: string, preco: number, quantidade: number }[]>([]);
+  const [cart, setCart] = useState<{ id: string, nome: string, preco: number, quantidade: number, imagem_url?: string }[]>([]);
   const [isCheckoutModalOpen, setCheckoutModalOpen] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({ nome: "", whatsapp: "", cidade: "", deliveryMethod: "retirada", endereco: "", paymentMethod: "pix" });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,7 +68,7 @@ export default function CatalogoPublicoPage() {
     if (existing) {
       newCart = cart.map(item => item.id === product.id ? { ...item, quantidade: item.quantidade + qtyToAdd } : item);
     } else {
-      newCart = [...cart, { id: product.id, nome: product.nome, preco: product.preco, quantidade: qtyToAdd }];
+      newCart = [...cart, { id: product.id, nome: product.nome, preco: product.preco, quantidade: qtyToAdd, imagem_url: product.imagem_url }];
     }
     setCart(newCart);
     localStorage.setItem('gama-public-cart', JSON.stringify(newCart));
@@ -405,9 +405,9 @@ export default function CatalogoPublicoPage() {
                   </span>
 
                   <img 
-                    src="/logo.png" 
+                    src={p.imagem_url || "/logo.png"} 
                     alt={p.nome} 
-                    className="w-full h-full object-contain filter drop-shadow-md group-hover:scale-110 transition-transform duration-500" 
+                    className={`w-full h-full filter group-hover:scale-110 transition-transform duration-500 ${p.imagem_url ? 'object-cover' : 'object-contain drop-shadow-md'}`} 
                   />
                   
                   {/* Quick Add Overlay on desktop (optional visual flair) */}
@@ -607,8 +607,8 @@ export default function CatalogoPublicoPage() {
                 <div className="flex flex-col gap-6">
                   {cart.map(item => (
                     <div key={item.id} className="flex gap-4">
-                      <div className="h-20 w-20 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-center flex-none p-2">
-                         <img src="/logo.png" alt={item.nome} className="w-full h-full object-contain" />
+                      <div className="h-20 w-20 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-center flex-none p-2 overflow-hidden">
+                         <img src={item.imagem_url || "/logo.png"} alt={item.nome} className={`w-full h-full ${item.imagem_url ? 'object-cover' : 'object-contain'}`} />
                       </div>
                       <div className="flex-1 flex flex-col">
                         <h4 className="text-sm font-bold text-[#1a3a70] line-clamp-2 leading-tight pr-4 relative">
