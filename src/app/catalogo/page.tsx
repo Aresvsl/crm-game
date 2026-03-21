@@ -41,7 +41,7 @@ export default function CatalogoPublicoPage() {
     if (isDemoMode) {
       setTimeout(() => {
         setProdutos([
-          { id: "1", nome: "Boné Snapback Classic", categoria: "Snapback", preco: 89.90, estoque: 45 },
+          { id: "1", nome: "Boné Snapback Classic", categoria: "Snapback", preco: 89.90, preco_antigo: 119.90, estoque: 45 },
           { id: "2", nome: "Boné Trucker Mesh", categoria: "Trucker", preco: 75.00, estoque: 157 },
           { id: "3", nome: "Dad Hat Retro", categoria: "Dad Hat", preco: 120.00, estoque: 5 },
           { id: "4", nome: "Beanie Winter", categoria: "Beanie", preco: 65.00, estoque: 89 },
@@ -391,6 +391,13 @@ export default function CatalogoPublicoPage() {
                     {p.categoria}
                   </span>
                   
+                  {/* Discount Badge */}
+                  {p.preco_antigo && p.preco_antigo > p.preco && (
+                    <span className="absolute top-12 left-3 px-2 py-1 bg-[#ff6b35] shadow-sm rounded-md text-[9px] font-black text-white uppercase tracking-widest z-10">
+                      -{Math.round(((p.preco_antigo - p.preco) / p.preco_antigo) * 100)}% OFF
+                    </span>
+                  )}
+                  
                   {/* Stock Tag */}
                   <span className="absolute top-3 right-3 text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-md z-10 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
@@ -413,9 +420,12 @@ export default function CatalogoPublicoPage() {
                     {p.nome}
                   </h3>
                   
-                  <div className="flex items-baseline gap-1 mt-auto pt-3">
+                  <div className="flex items-baseline gap-1 mt-auto pt-3 flex-wrap">
                     <span className="text-xs font-bold text-gray-400">R$</span>
                     <span className="text-xl md:text-2xl font-black text-[#1a3a70]">{p.preco.toFixed(2)}</span>
+                    {p.preco_antigo && p.preco_antigo > p.preco && (
+                      <span className="text-[10px] md:text-xs font-bold text-gray-400 line-through ml-1 md:ml-2">R$ {p.preco_antigo.toFixed(2)}</span>
+                    )}
                   </div>
                   
                   {/* Qty & Add to Cart Area */}

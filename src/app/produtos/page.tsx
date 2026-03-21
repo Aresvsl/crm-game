@@ -20,7 +20,7 @@ export default function ProdutosPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [newProduto, setNewProduto] = useState({ nome: "", categoria: "Snapback", preco: 0, estoque: 10 });
+  const [newProduto, setNewProduto] = useState<any>({ nome: "", categoria: "Snapback", preco: 0, estoque: 10, preco_antigo: null });
   const [editingProduto, setEditingProduto] = useState<any>(null);
   const [metrics, setMetrics] = useState({ totalItems: 0, totalValue: 0, alerts: 0 });
   const [searchTerm, setSearchTerm] = useState("");
@@ -65,7 +65,7 @@ export default function ProdutosPage() {
     setLoading(true);
     if (isDemoMode) {
       const mockData = [
-        { id: "1", nome: "Boné Snapback Classic Onyx", categoria: "Snapback", preco: 129.90, estoque: 45 },
+        { id: "1", nome: "Boné Snapback Classic Onyx", categoria: "Snapback", preco: 129.90, preco_antigo: 159.90, estoque: 45 },
         { id: "2", nome: "Boné Trucker Mesh White/Navy", categoria: "Trucker", preco: 85.00, estoque: 8 },
         { id: "3", nome: "Dad Hat Retro Suede Brown", categoria: "Dad Hat", preco: 150.00, estoque: 12 },
         { id: "4", nome: "Beanie Winter Wool Grey", categoria: "Beanie", preco: 65.00, estoque: 82 },
@@ -202,7 +202,10 @@ export default function ProdutosPage() {
         
         <div className="flex flex-wrap items-center gap-3">
           <button 
-            onClick={() => setModalOpen(true)}
+            onClick={() => {
+               setNewProduto({ nome: "", categoria: "Snapback", preco: 0, estoque: 10, preco_antigo: null });
+               setModalOpen(true);
+            }}
             className="flex items-center gap-3 px-10 py-5 bg-[#ff6b35] text-white rounded-[1.5rem] font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-orange-500/30 group"
           >
             <Plus size={18} className="group-hover:rotate-90 transition-transform duration-500" />
@@ -402,7 +405,10 @@ export default function ProdutosPage() {
                   <div className="grid grid-cols-2 gap-4 mb-8">
                     <div className="p-4 bg-white/60 rounded-[1.5rem] border border-white/80">
                       <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Preço</p>
-                      <p className="text-base font-black text-[#1a3a70]">R$ {p.preco.toFixed(2)}</p>
+                      <p className="text-base font-black text-[#1a3a70]">
+                        {p.preco_antigo && p.preco_antigo > p.preco && <span className="line-through text-gray-400 text-[10px] mr-1 opacity-60">R$ {p.preco_antigo.toFixed(2)}</span>}
+                        R$ {p.preco.toFixed(2)}
+                      </p>
                     </div>
                     <div className="p-4 bg-white/60 rounded-[1.5rem] border border-white/80">
                       <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Estoque</p>
@@ -471,10 +477,11 @@ export default function ProdutosPage() {
               </div>
               <p className="text-xs font-bold text-[#1a3a70]/70 leading-snug">Insira os detalhes técnicos para catalogar o novo produto no sistema elite.</p>
            </div>
-          <FormInput label="NOME DO MODELO" placeholder="Ex: GAMA SNAPBACK ONYX" value={newProduto.nome} onChange={(e) => setNewProduto({...newProduto, nome: e.target.value})} />
+          <FormInput label="NOME DO MODELO" placeholder="Ex: PRODUTO XYZ" value={newProduto.nome} onChange={(e) => setNewProduto({...newProduto, nome: e.target.value})} />
           <PremiumSelect label="CATEGORIA" value={newProduto.categoria} options={["Snapback", "Trucker", "Dad Hat", "Beanie"].map(c => ({value: c, label: c}))} onChange={(val) => setNewProduto({...newProduto, categoria: val})} />
-          <div className="grid grid-cols-2 gap-6">
-            <FormInput label="VALOR UNITÁRIO (R$)" type="number" value={newProduto.preco} onChange={(e) => setNewProduto({...newProduto, preco: Number(e.target.value)})} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <FormInput label="DE: PREÇO ANTIGO" type="number" value={newProduto.preco_antigo || ""} onChange={(e) => setNewProduto({...newProduto, preco_antigo: e.target.value ? Number(e.target.value) : null})} />
+            <FormInput label="POR: VALOR VENDA" type="number" value={newProduto.preco} onChange={(e) => setNewProduto({...newProduto, preco: Number(e.target.value)})} />
             <FormInput label="ESTOQUE INICIAL" type="number" value={newProduto.estoque} onChange={(e) => setNewProduto({...newProduto, estoque: Number(e.target.value)})} />
           </div>
           <button onClick={handleAdd} className="w-full bg-[#1a3a70] text-white p-6 rounded-[1.5rem] font-black text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-2xl">Confirmar Cadastro</button>
@@ -486,8 +493,9 @@ export default function ProdutosPage() {
           {editingProduto && (
             <>
               <FormInput label="NOME DO MODELO" value={editingProduto.nome} onChange={(e) => setEditingProduto({...editingProduto, nome: e.target.value})} />
-              <div className="grid grid-cols-2 gap-6">
-                <FormInput label="VALOR VENDA (R$)" type="number" value={editingProduto.preco} onChange={(e) => setEditingProduto({...editingProduto, preco: Number(e.target.value)})} />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <FormInput label="DE: PREÇO ANTIGO" type="number" value={editingProduto.preco_antigo || ""} onChange={(e) => setEditingProduto({...editingProduto, preco_antigo: e.target.value ? Number(e.target.value) : null})} />
+                <FormInput label="POR: VENDA ATUAL" type="number" value={editingProduto.preco} onChange={(e) => setEditingProduto({...editingProduto, preco: Number(e.target.value)})} />
                 <FormInput label="ESTOQUE ATUAL" type="number" value={editingProduto.estoque} onChange={(e) => setEditingProduto({...editingProduto, estoque: Number(e.target.value)})} />
               </div>
               <button onClick={handleUpdate} className="w-full bg-[#1a3a70] text-white p-6 rounded-[1.5rem] font-black text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-2xl">Salvar Alterações</button>
