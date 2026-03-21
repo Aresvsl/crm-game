@@ -165,12 +165,21 @@ export default function CatalogoPublicoPage() {
   return (
     <div className="min-h-screen bg-[#f8fafc] p-6 lg:p-12">
       <div className="max-w-7xl mx-auto space-y-12">
-        <div className="flex flex-col items-center text-center space-y-4 mb-12">
-          <div className="h-20 w-20 bg-[#1a3a70] rounded-3xl flex items-center justify-center shadow-2xl shadow-blue-900/20 rotate-3">
-             <Package size={40} className="text-[#ff6b35]" />
+        <div className="flex flex-col items-center text-center space-y-6 mb-16 relative">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] -z-10" />
+          
+          <div className="h-32 w-auto max-w-[280px] relative hover:scale-105 active:scale-95 transition-transform duration-500 cursor-pointer drop-shadow-2xl">
+             <img 
+               src="/logo.png" 
+               alt="Gama Bones Logo" 
+               className="w-full h-full object-contain filter drop-shadow-lg"
+             />
           </div>
-          <h1 className="text-5xl font-black text-[#1a3a70] tracking-tight">Catálogo Digital</h1>
-          <p className="text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px]">Escolha seus produtos e faça seu pedido</p>
+          
+          <div>
+            <h1 className="text-5xl font-black text-[#1a3a70] tracking-tighter mb-2">Catálogo Digital</h1>
+            <p className="text-[#ff6b35] font-black uppercase tracking-[0.3em] text-[10px]">Coleção 2026 • Gama Bones</p>
+          </div>
         </div>
 
         <div className="glass-card p-10 rounded-[2.5rem] shadow-2xl shadow-[#1a3a70]/5">
